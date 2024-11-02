@@ -1,0 +1,7 @@
+/* App.css */
+@media print {
+    .hide-in-print {
+      display: none;
+    }
+  }
+  
