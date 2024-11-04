@@ -72,7 +72,7 @@ export const IPDBillPrint = (props) => {
   const getIPDAdmissionDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDPatientDetails",
+        "http://192.168.1.32:5000/fetchIPDPatientDetails",
         {
           IPDNo: input,
         }

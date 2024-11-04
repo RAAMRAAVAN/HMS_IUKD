@@ -14,7 +14,7 @@ export const AdmissionForm = () => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDPatientDetails",
+        "http://192.168.1.32:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log(response.data[0]);
@@ -61,13 +61,13 @@ export const AdmissionForm = () => {
           <Typography fontSize={12}>
             Email: iukd.india@gmail.com, Web: www.iukdindia.com
           </Typography>
-          <Typography fontWeight="bold">Admission Form</Typography>
+          <Typography fontWeight="bold" marginTop={5}>Admission Form</Typography>
         </Grid>
         <Grid xs={2} item display="flex" justifyContent="end">
           
         </Grid>
       </Grid>
-      <Grid container margin={0} padding={0} >
+      <Grid container marginTop={5} padding={0} >
         {/* Patient Details */}
         <Grid container justifyContent="space-between" border="1px black solid">
           <Grid xs={6} container flexDirection="row">
@@ -209,7 +209,7 @@ export const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid xs={9} item>
-                  <Typography fontSize={12}>: {MRDDetails.Address}</Typography>
+                  <Typography fontSize={12}>: C/O: {MRDDetails.RelationName}, {MRDDetails.Address}</Typography>
                 </Grid>
               </Grid>
             </Grid>
