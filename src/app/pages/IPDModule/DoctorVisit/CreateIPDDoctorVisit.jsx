@@ -22,7 +22,7 @@ export const CreateIPDDoctorVisit = (props) => {
     const CreateIPDDoctorVisitList = async() => {
         setOpen(false);
         try{
-            let result = await axios.post('http://localhost:5000/CreateDoctorVisit', {
+            let result = await axios.post('http://192.168.1.32:5000/CreateDoctorVisit', {
                 ReceiptDate: date,
                 ReceiptTime: time,
                 IPDID: IPDNo,
@@ -43,7 +43,7 @@ export const CreateIPDDoctorVisit = (props) => {
     }
     const getDoctorList = async() => {
       try{
-          let result = await axios.get("http://localhost:5000/getDoctorList");
+          let result = await axios.get("http://192.168.1.32:5000/getDoctorList");
           console.log(result.data.DoctorList);
           setDoctorList(result.data.DoctorList)
       }catch(err){
@@ -65,7 +65,7 @@ export const CreateIPDDoctorVisit = (props) => {
       setAmount((Rate * NoOfVisit) - (Discount/100 * (Rate * NoOfVisit)));
       // UpdateVisitDetails();
     },[Rate, Discount, NoOfVisit]);
-    return(<><Grid container>
+    return(<><Grid container sx={{backgroundColor:"green"}}>
       <Grid
         xs={1}
         border="1px black solid"
@@ -73,6 +73,7 @@ export const CreateIPDDoctorVisit = (props) => {
         item
         alignItems="center"
         display="flex"
+        
       >
         <Typography fontWeight="bold" fontSize={10}>
           {/* {ReceiptID} */}
