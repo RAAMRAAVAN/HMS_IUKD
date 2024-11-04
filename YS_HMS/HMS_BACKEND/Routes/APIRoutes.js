@@ -12,7 +12,7 @@ const { IPDBillDetails, fetchDoctorVisits, fetchOtherServices, fetchPharmacyBill
 const { fetchOtDischarge, fetchOtDischargeDetails, getOTDischargeFormats } = require('../controllers/otDischargeController');
 const {fetchUserDetails} = require('../controllers/userController')
 const { fetchIPDMoneyReceipts, fetchIPDBillDetails, fetchIPDBillDet, fetchIPDMoneyReceiptDetails, deleteIPDMoneyReceipt, addMoneyReceipt, getMoneyReceiptDetails, updateMoneyReceipt } = require('../controllers/ipdMoneyReceiptController');
-const { fetchIPDDoctorVisitList, getVisitListDetails, UpdateVisitDetails, deleteDoctorVisitEntries, getDoctorList, AddDoctorVisit, CreateDoctorVisit } = require('../controllers/ipdDoctorVisit');
+const { fetchIPDDoctorVisitList, getVisitListDetails, UpdateVisitDetails, deleteDoctorVisitEntries, getDoctorList, AddDoctorVisit, CreateDoctorVisit, getDoctorVisitPermissions } = require('../controllers/ipdDoctorVisit');
 const { fetchOtherServicesList, getServiceListDetails, UpdateServiceDetails, getServiceList, AddService, deleteOtherServiceEntries, CreateOtherService } = require('../controllers/ipdOtherServices');
 
 // User Details
@@ -73,6 +73,7 @@ router.post('/deleteDoctorVisitEntries', deleteDoctorVisitEntries)
 router.get('/getDoctorList', getDoctorList)
 router.post('/AddDoctorVisit', AddDoctorVisit);
 router.post('/CreateDoctorVisit', CreateDoctorVisit)
+router.post('/getDoctorVisitPermissions', getDoctorVisitPermissions)
 
 router.post('/OtherServicesList', fetchOtherServicesList)
 router.post('/getServiceListDetails', getServiceListDetails)

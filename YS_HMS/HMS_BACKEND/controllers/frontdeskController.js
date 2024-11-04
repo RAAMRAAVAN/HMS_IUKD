@@ -9,7 +9,7 @@ exports.getFrontdeskCollection = (req, res) => {
   FROM [KH_20232024].[dbo].[Trn_MoneyReceipt]
   WHERE ReceiptCancel = 'N' 
     AND ActiveStatus = 'Y' 
-    AND ReceiptDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000'
+    AND ReceiptDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' AND UserID='${userID}'
   GROUP BY MOD WITH ROLLUP;`;
 
   request.query(query, (err, result) => {

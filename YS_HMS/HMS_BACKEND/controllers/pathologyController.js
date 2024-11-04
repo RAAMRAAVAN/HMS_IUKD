@@ -8,7 +8,7 @@ exports.getPathologyCollection = (req, res) => {
   const query =  `SELECT MOD, SUM(RecAmount) AS TotalRate
   FROM Trn_LabMoneyReceipt
   WHERE ActiveStatus = 'Y' AND ReceiptCancel='N'
-    AND CaseDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000'
+    AND CaseDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' AND UserID='${userID}'
   GROUP BY MOD WITH ROLLUP;`;
 
    
@@ -31,7 +31,7 @@ exports.getPathologyIPDCollection = (req, res) => {
   const toDate=req.body.toDate;
   // console.log(fromDate, toDate)
   const request = new sql.Request();
-  const query =  `select SUM(BalanceAmount) AS TotalRate from Trn_CaseEntry WHERE PatientType='I' AND CaseDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000'`;
+  const query =  `select SUM(BalanceAmount) AS TotalRate from Trn_CaseEntry WHERE PatientType='I' AND CaseDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' AND UserID='${userID}'`;
 
    
 

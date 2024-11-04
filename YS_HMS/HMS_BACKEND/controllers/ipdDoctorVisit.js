@@ -132,3 +132,19 @@ VALUES ('1', '1000001', '${GetLastEntry.recordset[0].ReceiptID + 1}', '${DrId}',
         res.status(500).json({err: err});
     }
 }
+
+exports.getDoctorVisitPermissions = async(req, res) => {
+    const {Uid, MenuID} = req.body;
+    const query = `select IsActive, U_View, U_Add, U_Update, U_Delete, U_Print from Tbl_UserRightDetails where UserId='${Uid}' AND MenuId='${MenuID}'`;
+    const request = new sql.Request();
+    try{
+        const getPermissionList = await request.query(query);
+        console.log(getPermissionList.recordset.length)
+        if(getPermissionList.recordset.length === 0)
+            res.json({PermissionStatus: "Declined"});
+        else
+            res.json({PermissionStatus: "Accepted", PermissionList: getPermissionList.recordset[0]});
+    }catch(err){
+        res.status(500).json({error: "Databaase Error"});
+    }
+}

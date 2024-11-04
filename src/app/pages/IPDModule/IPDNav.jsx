@@ -1,6 +1,6 @@
 import { Box, Tab } from "@mui/material"
 import { DatePicker, TabContext, TabList, TabPanel } from "@mui/lab";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Favorite } from "@mui/icons-material";
 import { IPDAdmission } from "./IPDAdmission";
 import { IPDBill } from "./IPDBill";
@@ -11,17 +11,53 @@ import { OtherServices } from "./OtherServices/OtherServices";
 import { useSelector } from "react-redux";
 import { OTBilling } from "./OTBilling/OTBilling";
 import { selectIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
+import axios from "axios";
+import {getPermissions} from "../../Const/Permissions"
+import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
 
 
 export const IPDNav = () => {
-    const IPDNo=useSelector(selectIPDNo)
+    const IPDNo = useSelector(selectIPDNo);
+    const UserDetails = useSelector(selectUserDetails);
+    const [Permissions, setPermissions] = useState({ DoctorVisit: false, OtherService: false })
+    console.log("UserID", UserDetails);
     // const {IPDNo} = props;
     const [value, setvalue] = useState("1");
     const handleChange = (event, newValue) => {
         setvalue(newValue);
     };
-    return IPDNo!=null?(<>
-    <Box padding={0} marginX={0} sx={{ display: "flex", flexDirection: "column" }}>
+
+    const getDoctorVisitPermissions = async () => {
+        try{
+            let value = await getPermissions(UserDetails.UId, 435)
+            value === "True"?setPermissions(prevPermissions => ({
+                ...prevPermissions,
+                DoctorVisit: true,
+            })):null;
+        }catch(err){
+            alert(err)
+        }
+    }
+
+    const getOtherServicePermissions = async () => {
+        try{
+            let value = await getPermissions(UserDetails.UId, 426)
+            value === "True"?setPermissions(prevPermissions => ({
+                ...prevPermissions,
+                OtherService: true,
+            })):null;
+        }catch(err){
+            alert(err)
+        }
+    }
+
+    useEffect(() => {
+        if(UserDetails != {})
+        getDoctorVisitPermissions();
+        getOtherServicePermissions();
+    }, [])
+    return IPDNo != null ? (<>
+        <Box padding={0} marginX={0} sx={{ display: "flex", flexDirection: "column" }}>
             <Box sx={{ display: "flex", flexDirection: "column", alignContent: "center" }}>
                 <TabContext value={value} padding={0} margin={0}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider", display: "flex", justifyContent: "center", alignItems: "center" }} >
@@ -33,7 +69,7 @@ export const IPDNav = () => {
                             centered
                             variant='scrollable'
                             scrollButtons='auto'
-                            
+
                         // sx={{display:"flex",justifyContent:"center"}}
                         >
                             <Tab label="Patient Admission" value="1" icon={<Favorite />} iconPosition='start' />
@@ -42,8 +78,9 @@ export const IPDNav = () => {
                             {/* <Tab label="Other Services List" value="4" /> */}
                             <Tab label="Discharge Summary" value="3" />
                             <Tab label="OT Billing" value="4" />
-                            <Tab label="Doctor Visit" value="5" />
-                            <Tab label="Medical Service" value="6" />
+                            {Permissions.DoctorVisit?<Tab label="Doctor Visit" value="5" />:null}
+                            
+                            {Permissions.OtherService?<Tab label="Medical Service" value="6" />:null}
                             <Tab label="Money Receipt" value="7" />
                             {/* <Tab label="Money Receipt List" value="8" /> */}
                             <Tab label="Bed Transfer" value="9" />
@@ -63,7 +100,7 @@ export const IPDNav = () => {
                     <TabPanel value="3">
                         <OTDischarge />
                     </TabPanel>
-                    <TabPanel value="4"><OTBilling/></TabPanel>
+                    <TabPanel value="4"><OTBilling /></TabPanel>
                     <TabPanel value="5">
                         <DoctorVisit />
                     </TabPanel>
@@ -76,5 +113,5 @@ export const IPDNav = () => {
                 </TabContext>
             </Box>
         </Box>
-    </>):<></>;
+    </>) : <></>;
 }

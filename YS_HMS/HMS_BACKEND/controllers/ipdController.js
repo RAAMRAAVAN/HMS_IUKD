@@ -4,12 +4,13 @@ const sql = require('mssql/msnodesqlv8');
 exports.getIPDCollection = (req, res) => {
   const fromDate=req.body.fromDate;
   const toDate=req.body.toDate;
+  const userID = req.body.Uid;
   // console.log(fromDate, toDate)
   const request = new sql.Request();
   const query =  `/****** Script for SelectTopNRows command from SSMS  ******/
   SELECT MOD, SUM(RecAmount) as TotalRate FROM [KH_20232024].[dbo].[Trn_IPDMoneyReceipt] 
   where ActiveStatus='Y' AND DeleteStatus='N' AND ReceiptCancel='N' AND
-  ReceiptDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' 
+  ReceiptDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' AND UserID='${userID}'
   Group By MOD with rollup`;
 
    
