@@ -6,11 +6,13 @@ import { createAppSlice } from "../../createAppSlice"; // Adjust the import path
 // Define the state interface for UserSlice
 export interface IpdPatientSliceState {
   IPDNo: number;  // If userDetails is an object, define it as such
+  selectedPatient: {};
 }
 
 // Define the initial state
 const initialState: IpdPatientSliceState = {
   IPDNo: null,
+  selectedPatient: null
 };
 
 // Create the user slice
@@ -31,17 +33,18 @@ export const ipdPatientSlice = createAppSlice({
         state.IPDNo = action.payload;
       },
     ),
-    // The function below is called a thunk and allows us to perform async logic. It
-    // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-    // will call the thunk with the `dispatch` function as the first argument. Async
-    // code can then be executed and other actions can be dispatched. Thunks are
-    // typically used to make async requests.
+    assignselectedPatient: create.reducer(
+      (state, action: PayloadAction<{}>) => {
+        state.selectedPatient = action.payload;
+      },
+    ),
   })
 });
 
 // Action creators are generated for each case reducer function.
-export const { assignIPDNo} =
+export const { assignIPDNo, assignselectedPatient} =
 ipdPatientSlice.actions;
 
 // Define selectors for accessing state
 export const selectIPDNo = (state: { ipdPatientSlice: IpdPatientSliceState }) => state.ipdPatientSlice.IPDNo;
+export const selectselectedPatient = (state: { ipdPatientSlice: IpdPatientSliceState }) => state.ipdPatientSlice.selectedPatient;

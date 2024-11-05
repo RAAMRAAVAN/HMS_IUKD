@@ -8,11 +8,12 @@ export const MedicalServices = (props) => {
   const [medicalServices, setMedicalServices] = useState([]);
   let totalNetAmount=0;
   let totalAmount = 0;
+  let totalDiscount = 0;
   let temp1=0;
   const getMedicalServices = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchOtherServices",
+        "http://192.168.1.32:5000/fetchOtherServices",
         { IPAID: data }
       );
       setMedicalServices(response.data.otherServices);
@@ -32,6 +33,7 @@ export const MedicalServices = (props) => {
         if (index != 0) temp1 = medicalServices[index - 1].OCNO;
         totalNetAmount = totalNetAmount + medicalService.NetAmount;
         totalAmount = totalAmount + medicalService.GrossAmount;
+        totalDiscount = totalDiscount + medicalService.Discount;
         return (
           <>
             {temp1 !== medicalService.OCNO ? (
@@ -94,7 +96,7 @@ export const MedicalServices = (props) => {
           <Typography fontSize={12}>{setTotalMedicalServices(Number(totalNetAmount))}{totalNetAmount}</Typography>
         </Grid>
         <Grid xs={2} item display="flex" justifyContent="center">
-          <Typography fontSize={12}>{setDiscountMedicalServices(totalNetAmount - totalAmount)}{totalNetAmount - totalAmount}</Typography>
+          <Typography fontSize={12}>{setDiscountMedicalServices(totalDiscount)}{totalDiscount}</Typography>
           
         </Grid>
         <Grid xs={1} item display="flex" justifyContent="end">

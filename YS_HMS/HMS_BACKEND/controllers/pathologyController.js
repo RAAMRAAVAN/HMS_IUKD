@@ -3,6 +3,7 @@ const sql = require('mssql/msnodesqlv8');
 exports.getPathologyCollection = (req, res) => {
   const fromDate=req.body.fromDate;
   const toDate=req.body.toDate;
+  const userID = req.body.Uid;
   console.log(fromDate, toDate)
   const request = new sql.Request();
   const query =  `SELECT MOD, SUM(RecAmount) AS TotalRate
@@ -29,6 +30,7 @@ exports.getPathologyCollection = (req, res) => {
 exports.getPathologyIPDCollection = (req, res) => {
   const fromDate=req.body.fromDate;
   const toDate=req.body.toDate;
+  const userID = req.body.Uid;
   // console.log(fromDate, toDate)
   const request = new sql.Request();
   const query =  `select SUM(BalanceAmount) AS TotalRate from Trn_CaseEntry WHERE PatientType='I' AND CaseDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' AND UserID='${userID}'`;

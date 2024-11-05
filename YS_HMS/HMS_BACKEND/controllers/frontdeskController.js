@@ -3,6 +3,7 @@ const sql = require("mssql/msnodesqlv8");
 exports.getFrontdeskCollection = (req, res) => {
   const fromDate = req.body.fromDate;
   const toDate = req.body.toDate;
+  const userID = req.body.Uid;
   // console.log(fromDate, toDate)
   const request = new sql.Request();
   const query = `SELECT MOD, SUM(RecAmount) AS TotalRate
@@ -26,6 +27,7 @@ exports.getFrontdeskCollection = (req, res) => {
 exports.getFrontdeskBills = async(req, res) => {
   // console.log(fromDate, toDate)
   const fromDate = req.body.fromDate;
+  const userID = req.body.Uid;
   const toDate = req.body.toDate;
   const request = new sql.Request();
   const query = `SELECT
@@ -59,13 +61,13 @@ JOIN
   JOIN
   M_ServiceMaster sm ON mrd.Sid = sm.SID  -- Join with M_UserMaster to get the user name
 WHERE
-  mr.ReceiptDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000';
+  mr.ReceiptDate BETWEEN '${fromDate} 00:00:00.000' AND '${toDate} 23:59:59.000' AND mr.UserID='${userID}';
 
 `;
   const query2 = `SELECT rl.ReceiptNo, rl.AID, rl.HRNo as HRNO, rl.PatientName, rl.ActiveStatus, rl.DeleteStatus, rl.ContactNo, rl.PrintReceiptNo, rl.ReceiptDate, rl.MOD, rl.ReceiptCancel, um.FirstName, um.UId, rl.RecAmount as NetAmount   FROM V#RefundReceiptList rl
 Join
  M_UserMaster um ON rl.UserID = um.UId
-where ReceiptDate between '${fromDate} 00:00:00.000' and '${toDate} 00:00:00.000'`;
+where ReceiptDate between '${fromDate} 00:00:00.000' and '${toDate} 00:00:00.000' AND rlUserID='${userID}'`;
 
 try {
   // Execute first query

@@ -61,7 +61,7 @@ export const OtherServices = (props) => {
     setOtherServicesList([])
     try {
       const response = await axios.post(
-        "http://localhost:5000/OtherServicesList",
+        "http://192.168.1.32:5000/OtherServicesList",
         {
           IPDID: input,
         }
@@ -76,7 +76,7 @@ export const OtherServices = (props) => {
   const deleteOtherServiceEntries = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/deleteOtherServiceEntries",
+        "http://192.168.1.32:5000/deleteOtherServiceEntries",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -97,7 +97,7 @@ export const OtherServices = (props) => {
   return (
     <>
       {/* <AddIPDMoneyReceipt setOpen={setOpen} open={open} IPDNo={IPDNo} /> */}
-      <Box>
+      <Box display="flex" width="90vw" flexDirection="column">
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h6">
             Medical Services{" "}
@@ -123,7 +123,7 @@ export const OtherServices = (props) => {
               <></>
             )}
           </Typography>
-          <Grid
+          {/* <Grid
             display="flex"
             // border="1px black solid"
             alignItems="center"
@@ -134,28 +134,28 @@ export const OtherServices = (props) => {
               <Typography fontSize={10} fontWeight="bold">
                 HRNO:{" "}
               </Typography>
-              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].HRNo}</Typography> */}
+              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].HRNo}</Typography> 
             </Grid>
 
             <Grid item xs={2} display="flex">
               <Typography fontSize={10} fontWeight="bold">
                 IPD NO:{" "}
               </Typography>
-              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography> */}
+              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography> 
             </Grid>
 
             <Grid item xs={2} display="flex">
               <Typography fontSize={10} fontWeight="bold">
                 Patinet Name:{" "}
               </Typography>
-              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].PatientName}</Typography> */}
+              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].PatientName}</Typography> 
             </Grid>
 
             <Grid item xs={2} display="flex">
               <Typography fontSize={10} fontWeight="bold">
                 Admit Date:{" "}
               </Typography>
-              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography> */}
+              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography>
             </Grid>
 
             
@@ -164,9 +164,9 @@ export const OtherServices = (props) => {
               <Typography fontSize={10} fontWeight="bold">
                 Bed NO:{" "}
               </Typography>
-              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography> */}
+              {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography> 
             </Grid>
-          </Grid>
+          </Grid> */}
           <Button onClick={handleOpen} variant="outlined">
             Add
           </Button>

@@ -34,7 +34,7 @@ export default function page() {
         if (storedValue != "" && storedValue != undefined) {
             setUserName(storedValue);
             setLogin(true);
-            setLoading("Found_User");
+            // setLoading("Found_User");
             console.log("User Founed", storedValue)
         }
         else {

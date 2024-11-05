@@ -10,7 +10,7 @@ import { DoctorVisit } from "./DoctorVisit/DoctorVisit";
 import { OtherServices } from "./OtherServices/OtherServices";
 import { useSelector } from "react-redux";
 import { OTBilling } from "./OTBilling/OTBilling";
-import { selectIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
+import { selectIPDNo, selectselectedPatient } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
 import axios from "axios";
 import {getPermissions} from "../../Const/Permissions"
 import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
@@ -18,8 +18,9 @@ import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice
 
 export const IPDNav = () => {
     const IPDNo = useSelector(selectIPDNo);
+    
     const UserDetails = useSelector(selectUserDetails);
-    const [Permissions, setPermissions] = useState({ DoctorVisit: false, OtherService: false })
+    const [Permissions, setPermissions] = useState({ DoctorVisit: false, OtherService: false, IPDMoneyReceipt: false })
     console.log("UserID", UserDetails);
     // const {IPDNo} = props;
     const [value, setvalue] = useState("1");
@@ -53,8 +54,10 @@ export const IPDNav = () => {
 
     useEffect(() => {
         if(UserDetails != {})
-        getDoctorVisitPermissions();
-        getOtherServicePermissions();
+        {   console.log("User Details=", UserDetails);
+            getDoctorVisitPermissions();
+            getOtherServicePermissions();
+        }
     }, [])
     return IPDNo != null ? (<>
         <Box padding={0} marginX={0} sx={{ display: "flex", flexDirection: "column" }}>
@@ -73,22 +76,22 @@ export const IPDNav = () => {
                         // sx={{display:"flex",justifyContent:"center"}}
                         >
                             <Tab label="Patient Admission" value="1" icon={<Favorite />} iconPosition='start' />
-                            {/* <Tab label="Admission List" value="2" /> */}
+
                             <Tab label="IPD BILL" value="2" />
-                            {/* <Tab label="Other Services List" value="4" /> */}
+
                             <Tab label="Discharge Summary" value="3" />
                             <Tab label="OT Billing" value="4" />
                             {Permissions.DoctorVisit?<Tab label="Doctor Visit" value="5" />:null}
                             
                             {Permissions.OtherService?<Tab label="Medical Service" value="6" />:null}
+                            {Permissions.IPDMoneyReceipt?<Tab label="Money Receipt" value="7" />:null}
                             <Tab label="Money Receipt" value="7" />
-                            {/* <Tab label="Money Receipt List" value="8" /> */}
-                            <Tab label="Bed Transfer" value="9" />
-                            {/* <Tab label="Bed Transfer List" value="9" /> */}
+                            {/* <Tab label="Bed Transfer" value="9" />
+
                             <Tab label="Discharge" value="9" />
-                            {/* <Tab label="Discharge List" value="9" /> */}
+
                             <Tab label="Estimate Bill" value="9" />
-                            <Tab label="Final Bill" value="9" />
+                            <Tab label="Final Bill" value="9" /> */}
                         </TabList>
                     </Box>
                     <TabPanel value="1" sx={{ padding: "0", margin: "0" }}>

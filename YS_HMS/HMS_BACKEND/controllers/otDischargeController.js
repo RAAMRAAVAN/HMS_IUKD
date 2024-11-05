@@ -7,13 +7,14 @@ exports.fetchOtDischarge = async(req, res) => {
     const query = `select FORM.DischargeFormatName, FORM.DischargeFormatId,FORM.Format,IPAD.Date AS AdmDate, IPAD.Time AS AdmTime, IPAD.Year, IPAD.Month, IPAD.Days, IPAD.PhoneNo,OTD.* from Trn_OTDischarge AS OTD
 join 
 M_IPDAdmission AS IPAD
-on IPAD.IPDNo=OTD.IPDNO
+on IPAD.IPAID=OTD.PId
 join
 M_OTDischargeFormatMaster AS FORM
 on OTD.FormatType=FORM.DischargeFormatId
 where OTD.IPDID='${IPAID}'`
     try{
         const otDischarge = await request.query(query);
+        console.log("Discharge", otDischarge)
         //   const doctorVisits = await request.query(query2);
         res.json({otDischarge: otDischarge.recordset})
     }catch (err){

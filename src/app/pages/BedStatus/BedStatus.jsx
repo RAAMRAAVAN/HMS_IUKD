@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getBedStatusAsync, selectBedDetails, selectWardDetails } from "@/src/lib/features/bedStatus/bedStatusSlice";
-import { assignIPDNo, selectIPDNo, setIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
+import { assignIPDNo, assignselectedPatient, selectIPDNo, setIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
 import { useRouter } from "next/navigation";
 
 export const BedStatus = (props) => {
@@ -16,9 +16,10 @@ export const BedStatus = (props) => {
 
   // const [loading, setLoading] = useState(false);
 
-  const handleBedClick = async(bedIPDNo) => {
+  const handleBedClick = async(bed) => {
     setLoading("loading")
-    dispatch(assignIPDNo(bedIPDNo));
+    dispatch(assignIPDNo(bed.IPAID));
+    dispatch(assignselectedPatient({IPAID: bed.IPAID, HRNo: bed.IPDHRNo, PatientName: bed.PatientName, Date: bed.Date}));
     router.push('/pages/IPDModule');
     // setLoading(false)
   };
@@ -88,7 +89,7 @@ export const BedStatus = (props) => {
                             width="100%"
                             height="130px"
                             padding={1}
-                            onClick={() => { handleBedClick(bed.IPAID) }}
+                            onClick={() => { handleBedClick(bed) }}
                           >
                             <Box
                               display="flex"
