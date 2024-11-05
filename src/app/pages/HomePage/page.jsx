@@ -33,8 +33,8 @@ export default function IndexPage() {
     if (storedValue != "" && storedValue != undefined) {
       setUserName(storedValue);
       setLogin(true);
-      setLoading("Found_User");
-      console.log("User Founed", storedValue)
+      // setLoading("Found_User");
+      // console.log("User Founed", storedValue)
     }
     else {
       setLoading("Not_Found")

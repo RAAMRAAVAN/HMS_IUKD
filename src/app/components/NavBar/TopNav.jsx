@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBedStatusAsync } from "@/src/lib/features/bedStatus/bedStatusSlice";
 import { useRouter } from "next/navigation";
 import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
-import { assignIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
+import { assignIPDNo, assignselectedPatient } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -98,7 +98,7 @@ export const TopNav = (props) => {
                 fontSize:"14px",
                 cursor:"pointer"
               }}
-              onClick={()=>{dispatch(assignIPDNo(null));router.push('/');}}
+              onClick={()=>{dispatch(assignIPDNo(null));dispatch(assignselectedPatient(null));router.push('/');}}
             >
               Institute Of Urology And Kidney Diseases
             </Typography>

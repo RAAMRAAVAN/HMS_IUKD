@@ -21,7 +21,7 @@ export const OTDischarge = () => {
   const fetchOtDischarge = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchOtDischarge",
+        "http://192.168.1.32:5000/fetchOtDischarge",
         {
           IPAID: input,
         }
@@ -36,7 +36,7 @@ export const OTDischarge = () => {
   }, [IPDNo]);
   return IPDNo != undefined?(
     <>
-      <Box>
+      <Box display="flex" width="90vw" flexDirection="column">
         <Typography variant="h6">OT Discharge List</Typography>
         <Grid container>
           <Grid
@@ -136,6 +136,7 @@ export const OTDischarge = () => {
             <Typography fontWeight="bold" fontSize={12}>Action</Typography>
           </Grid>
         </Grid>
+        {/* {console.log("Discharge List", otDischargeList)} */}
         {otDischargeList.map((discharge, index) => {
           return (
             <Grid container>

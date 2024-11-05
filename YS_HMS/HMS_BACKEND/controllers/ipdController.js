@@ -314,3 +314,21 @@ exports.checkAdmissionStatus = async(req, res) => {
     res.status(500).json({err: "Database Error"});
   }
 }
+
+exports.filterIPDPatientAuto = async (req, res) => {
+  const like_name = req.body.like_name;
+  // console.log(req.body.like_name)
+  const request = new sql.Request();
+  const query1 = `select IPAID, HRNo, PatientName, Date from M_IPDAdmission where (PatientName LIKE '%${like_name}%' OR
+            HRNo LIKE '%${like_name}%') AND RegStatus='B' AND Discharge='N' ORDER BY Date DESC`
+  try{
+    const filtered_patient_list = await request.query(query1);
+    // console.log(filtered_patient_list)
+    const combinedResults = {
+      filtered_patients: filtered_patient_list.recordset
+    }
+    res.json(combinedResults)
+  } catch (err) {
+    res.status(500).json({error: "Database Error"})
+  }
+}

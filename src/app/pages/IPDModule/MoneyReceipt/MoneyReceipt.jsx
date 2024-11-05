@@ -55,7 +55,7 @@ export const MoneyReceipt = (props) => {
   const fetchIPDMoneyReceipts = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDMoneyReceipts",
+        "http://192.168.1.32:5000/fetchIPDMoneyReceipts",
         {
           IPDID: input,
         }
@@ -69,7 +69,7 @@ export const MoneyReceipt = (props) => {
   const deleteIPDMoneyReceipt = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/deleteIPDMoneyReceipt",
+        "http://192.168.1.32:5000/deleteIPDMoneyReceipt",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -91,7 +91,7 @@ export const MoneyReceipt = (props) => {
     <>
       <AddIPDMoneyReceipt setOpen={setOpen} open={open} IPDID={IPDNo}/>
       <UpdateIPDMoneyReceipt setUpdateOpen={setUpdateOpen} updateOpen={updateOpen} IPDNo={IPDNo} ReceiptID={receiptID}/>
-      <Box>
+      <Box display="flex" width="90vw" flexDirection="column">
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h6">
             Money Receipt List{" "}

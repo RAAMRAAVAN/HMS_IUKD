@@ -56,7 +56,7 @@ exports.UpdateServiceDetails = async (req, res) => {
     const {AID, Qty, Discount, Amount, Rate, User, ActiveStatus, DeleteStatus, NetAmount} = req.body;
     // console.log("ReceiptID", AID, Qty, Discount, Amount, Rate, User, ActiveStatus, DeleteStatus)
     const request = new sql.Request();
-    const query = `update Trn_IPDOtherServiceDetails set Qty='${Qty}', Discount='${Discount}', NetAmount=${NetAmount}, Rate='${Rate}', UserID='${User}', ActiveStatus='${ActiveStatus}', DeleteStatus='${DeleteStatus}' where AID='${AID}'`;
+    const query = `update Trn_IPDOtherServiceDetails set Qty='${Qty}', Discount='${Discount}', NetAmount=${NetAmount}, Rate='${Rate}', GrossAmount='${Amount}',UserID='${User}', ActiveStatus='${ActiveStatus}', DeleteStatus='${DeleteStatus}' where AID='${AID}'`;
     // , NoOfVisit='${NoOfVisit}', Discount='${Discount}', Amount='${Amount}', Rate='${Rate}', User='${User}'
 
     try{

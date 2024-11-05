@@ -61,7 +61,7 @@ export const AddOTDischarge = (props) => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDPatientDetails",
+        "http://192.168.1.32:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log("money=", response.data[0]);
@@ -79,7 +79,7 @@ export const AddOTDischarge = (props) => {
   };
   const getOTDischargeFormats = async () => {
     try {
-      let result = await axios.get("http://localhost:5000/getOTDischargeFormats");
+      let result = await axios.get("http://192.168.1.32:5000/getOTDischargeFormats");
       setOtDischargeFormatList(result.data.OTDischargeFormats)
     } catch (err) {
       alert("DB Error");
@@ -99,7 +99,7 @@ export const AddOTDischarge = (props) => {
 
   const SaveMoneyReceipt = async (printStatus) => {
     try {
-      let response = await axios.post("http://localhost:5000/addMoneyReceipt", {
+      let response = await axios.post("http://192.168.1.32:5000/addMoneyReceipt", {
         ReceiptDate: date,
         ReceiptTime: time,
         AdmitDate: AdmDate,
