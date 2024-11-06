@@ -23,8 +23,8 @@ export const VisitEntry = (props) => {
   const UpdateVisitDetails = async(A, D) => {
     // alert("UPdate",{AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
     try{
-      let result = await axios.post('http://192.168.1.32:5000/UpdateVisitDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
-      // alert("Entry Updatted");
+      let result = await axios.post('http://localhost:5000/UpdateVisitDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
+      alert("Entry Updatted");
     } catch (err) {
       console.log(err);
     } 

@@ -61,13 +61,16 @@ export const DoctorVisit = () => {
     setIPDDoctorVisitList([])
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDDoctorVisitList",
+        "http://localhost:5000/fetchIPDDoctorVisitList",
         {
           IPDID: input,
         }
       );
+      if(response.data.IPDDoctorVisitList.length === 0){
+        handleOpen();
+      }
       setIPDDoctorVisitList(response.data.IPDDoctorVisitList);
-      console.log("visits", response.data.IPDDoctorVisitList);
+      console.log("visits=", response.data.IPDDoctorVisitList.length);
     } catch (error) {
       alert(error);
     }
@@ -76,7 +79,7 @@ export const DoctorVisit = () => {
   const deleteIPDMoneyReceipt = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/deleteIPDMoneyReceipt",
+        "http://localhost:5000/deleteIPDMoneyReceipt",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -97,7 +100,7 @@ export const DoctorVisit = () => {
   return setIPDDoctorVisitList.length > 0?(
     <>
       {/* <AddIPDMoneyReceipt setOpen={setOpen} open={open} IPDNo={IPDNo} /> */}
-      <Box display="flex" width="90vw" flexDirection="column">
+      <Box display="flex" width="95vw" flexDirection="column">
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h6">
             Doctor Visit List{" "}
@@ -167,9 +170,9 @@ export const DoctorVisit = () => {
               {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography>
             </Grid>
           </Grid> */}
-          <Button onClick={handleOpen} variant="outlined">
+          {/* <Button onClick={handleOpen} variant="outlined">
             Add
-          </Button>
+          </Button> */}
         </Box>
 
         <Grid container>

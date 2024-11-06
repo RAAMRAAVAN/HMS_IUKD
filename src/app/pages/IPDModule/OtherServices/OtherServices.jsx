@@ -61,11 +61,15 @@ export const OtherServices = (props) => {
     setOtherServicesList([])
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/OtherServicesList",
+        "http://localhost:5000/OtherServicesList",
         {
           IPDID: input,
         }
       );
+      if(response.data.OtherServicesList.length === 0)
+      {
+        handleOpen();
+      }
       setOtherServicesList(response.data.OtherServicesList);
       console.log("visits", response.data.OtherServicesList);
     } catch (error) {
@@ -76,7 +80,7 @@ export const OtherServices = (props) => {
   const deleteOtherServiceEntries = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/deleteOtherServiceEntries",
+        "http://localhost:5000/deleteOtherServiceEntries",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -97,7 +101,7 @@ export const OtherServices = (props) => {
   return (
     <>
       {/* <AddIPDMoneyReceipt setOpen={setOpen} open={open} IPDNo={IPDNo} /> */}
-      <Box display="flex" width="90vw" flexDirection="column">
+      <Box display="flex" width="95vw" flexDirection="column">
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h6">
             Medical Services{" "}
@@ -167,9 +171,9 @@ export const OtherServices = (props) => {
               {/* <Typography fontSize={10}>{IPDDoctorVisitList[0].IPDNo}</Typography> 
             </Grid>
           </Grid> */}
-          <Button onClick={handleOpen} variant="outlined">
+          {/* <Button onClick={handleOpen} variant="outlined">
             Add
-          </Button>
+          </Button> */}
         </Box>
 
         <Grid container>
