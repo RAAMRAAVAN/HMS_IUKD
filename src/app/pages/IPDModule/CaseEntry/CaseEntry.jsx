@@ -1,39 +1,41 @@
-import { Delete, EditNote, Print, Restore, SystemUpdateAlt, Upgrade, ViewAgenda } from "@mui/icons-material"
+import { Delete, EditNote, Print, Restore, SystemUpdateAlt, ViewAgenda } from "@mui/icons-material"
 import { Grid, IconButton, TextField, Typography } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react"
 
-export const VisitEntry = (props) => {
+export const CaseEntry = (props) => {
   let [AID, setAID] = useState(props.AID);
   let [Rate, setRate] = useState(props.Rate);
-  let [NoOfVisit, setNoOfVisit] = useState(props.NoOfVisit);
+  let [Qty, setQty] = useState(props.Qty);
   let [Discount, setDiscount] = useState(props.Discount);
-  let [VisitDate, setVisitDate] = useState(new Date(props.VisitDate)
-  .toISOString()
-  .split("T")[0]);
-  let [Amount, setAmount] = useState((Rate * NoOfVisit) - (Discount/100 * (Rate * NoOfVisit)));
+  // let [VisitDate, setVisitDate] = useState(new Date(props.VisitDate)
+  // .toISOString()
+  // .split("T")[0]);
+  let [NetAmount, setNetAmount] = useState(Rate * Qty);
+  let [Amount, setAmount] = useState((Rate * Qty) - Discount);
   let [User, setUser] = useState(props.User);
-  let [DoctorName, setDoctorName] = useState(props.DoctorName);
+  let [reportingName, setReportingName] = useState(props.ReportingName);
   let [ActiveStatus, setActiveStatus] = useState(props.ActiveStatus);
   let [DeleteStatus, setDeleteStatus] = useState(props.DeleteStatus);
-  const [ReceiptCancel, setReceiptCancel] = useState(props.ReceiptCancel)
+  // const [ReceiptCancel, setReceiptCancel] = useState(props.ReceiptCancel)
 
-  console.log("ActiveStatus, DeleteStatus",AID,ActiveStatus, DeleteStatus, ReceiptCancel)
+  console.log("ActiveStatus, DeleteStatus",AID,ActiveStatus, DeleteStatus)
 
-  const UpdateVisitDetails = async(A, D) => {
-    // alert("UPdate",{AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
+  const UpdateServiceDetails = async() => {
+    // alert("Update", {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"});
     try{
-      let result = await axios.post('http://localhost:5000/UpdateVisitDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
-      alert("Entry Updatted");
+      let result = await axios.post('http://localhost:5000/UpdateServiceDetails', {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
     } catch (err) {
       console.log(err);
     } 
+    alert("Entry Updated")
   }
 
   useEffect(()=>{
-    setAmount((Rate * NoOfVisit) - (Discount/100 * (Rate * NoOfVisit)));
-    // UpdateVisitDetails();
-  },[Rate, Discount, VisitDate, NoOfVisit, Amount, User, ActiveStatus, DeleteStatus]);
+    setAmount((Rate * Qty) - Discount);
+    setNetAmount(Rate * Qty);
+    // UpdateServiceDetails();
+  },[Rate, Discount, Qty, Amount, User, ActiveStatus, DeleteStatus]);
     return(<> 
     <Grid container backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}>
         {/* <Grid
@@ -66,7 +68,7 @@ export const VisitEntry = (props) => {
           alignItems="center"
           display="flex"
         >
-          <TextField fontWeight="bold" value={VisitDate} onChange={(e)=>{setVisitDate(e.target.value)}} fontSize={10} type="date" size="small" padding={0} style={{margin:"0"}} fullWidth/>
+          {/* <TextField fontWeight="bold" value={VisitDate} onChange={(e)=>{setVisitDate(e.target.value)}} fontSize={10} type="date" size="small" padding={0} style={{margin:"0"}} fullWidth/> */}
         </Grid>
         <Grid
           xs={2}
@@ -77,7 +79,7 @@ export const VisitEntry = (props) => {
           display="flex"
         >
           <Typography fontWeight="bold" fontSize={10}>
-            {DoctorName}
+            {reportingName}
           </Typography>
         </Grid>
         <Grid
@@ -88,7 +90,7 @@ export const VisitEntry = (props) => {
           alignItems="center"
           display="flex"
         >
-          <TextField value={NoOfVisit} onChange={(e)=>{setNoOfVisit(e.target.value)}} size="small"/>
+          <TextField value={Qty} onChange={(e)=>{setQty(e.target.value)}} size="small"/>
         </Grid>
 
         <Grid
@@ -181,7 +183,7 @@ export const VisitEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0" }}
-            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y");UpdateVisitDetails("N", "Y")}}
+            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y")}}
           >
             <Delete
               size="small"
@@ -198,7 +200,7 @@ export const VisitEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0"}}
-            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N");UpdateVisitDetails("Y", "N")}}
+            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N")}}
           >
             <Restore
               size="small"
@@ -214,7 +216,7 @@ export const VisitEntry = (props) => {
           <IconButton
             aria-label="delete"
             size="small"
-            style={{ padding: "0", margin: "0"}}
+            style={{ padding: "0", margin: "0" }}
               
           >
             <SystemUpdateAlt
@@ -225,7 +227,7 @@ export const VisitEntry = (props) => {
                 display: "flex",
                 height: "20px",
               }}
-              onClick={()=>UpdateVisitDetails(ActiveStatus, DeleteStatus)}
+              onClick={()=>UpdateServiceDetails()}
             />
           </IconButton>
         </Grid>

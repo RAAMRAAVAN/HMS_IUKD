@@ -25,43 +25,31 @@ import { assignValue } from "@/src/lib/features/TextEditor/TextEditorSlice";
 
 export const AddOTDischarge = (props) => {
   const dispatch = useDispatch();
-  const { setOpen, open, IPDID } = props;
-  const handlePrintClick = (ReceiptID) => {
-    const url = `/pages/IPDModule/MoneyReceipt?ReceiptID=${ReceiptID}`;
+  const { setOpen, open, IPDID, AID, PId } = props;
+  const handlePrintClick = () => {
+    const url = `/pages/IPDModule/OTDischarge/OTDischargePrint?PId=${PId}`;
     window.open(url, "_blank"); // Opens in a new tab
   };
   const [html, setHtml] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState(new Date().toISOString().split("T")[1].split("Z")[0]);
+  const [time, setTime] = useState(new Date().toTimeString().slice(0, 8));
+  // useState(new Date().toTimeString().slice(0, 5)));
+  console.log("DisTimme=", new Date().toLocaleString());
   const [MRDDetails, setMRDDetails] = useState({});
   const [selectedFormat, setSelectedFormat] = useState(props.selectedFormat);
   const [otDischargeFormatList, setOtDischargeFormatList] = useState([]);
   const [value, setValue] = useState(props.selectedFormat.Format[1]);
   const [AdmDate, setAdmDate] = useState();
   const [AdmTime, setAdmTime] = useState();
-  const [amount, setAmount] = useState(0);
-  const [recAmount, setRecAmount] = useState(0);
+
   const handleClose = () => setOpen(false);
-  const [enableBank, setEnableBank] = useState(false);
-  const [paymentMethod, setpaymentMethod] = useState("C");
-  const [bank, setBank] = useState("65");
-  const [trnID, setTrnID] = useState("");
+
   const [remark, setRemark] = useState("");
-  // console.log(
-  //   "date",
-  //   date,
-  //   "time",
-  //   time,
-  //   "AdmDate",
-  //   AdmDate,
-  //   "AdmTime",
-  //   extractTimeFromISO(MRDDetails.Time)
-  // );
-  // console.log(AdmDate + new Date(MRDDetails.Time).toTimeString().split(" ")[0]);
+
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDPatientDetails",
+        "http://localhost:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log("money=", response.data[0]);
@@ -79,70 +67,31 @@ export const AddOTDischarge = (props) => {
   };
   const getOTDischargeFormats = async () => {
     try {
-      let result = await axios.get("http://192.168.1.32:5000/getOTDischargeFormats");
+      let result = await axios.get("http://localhost:5000/getOTDischargeFormats");
       setOtDischargeFormatList(result.data.OTDischargeFormats)
     } catch (err) {
       alert("DB Error");
     }
   }
 
-  const ResetValues = () => {
-    setAmount(0);
-    setBank("65");
-    setTrnID("");
-    setRecAmount(0);
-    setDate(new Date().toISOString().split("T")[0]);
-    setTime(new Date().toTimeString().split(" ")[0]);
-    setpaymentMethod("C");
-    setRemark("");
-  }
-
-  const SaveMoneyReceipt = async (printStatus) => {
+  const updateOTDischargeDate = async (printStatus) => {
     try {
-      let response = await axios.post("http://192.168.1.32:5000/addMoneyReceipt", {
-        ReceiptDate: date,
-        ReceiptTime: time,
-        AdmitDate: AdmDate,
-        HRNo: MRDDetails.HRNo,
-        WardID: MRDDetails.WardID,
-        BedID: MRDDetails.BedID,
-        PatientName: MRDDetails.PatientName,
-        IPDNo: IPDID,
-        Address: MRDDetails.Address,
-        TotalAmount: recAmount,
-        Remark: remark,
-        MOD: paymentMethod,
-        AccountNo: trnID,
-        IPDID: MRDDetails.PrintIPDNo,
-        BankID: bank,
-      });
-      if (response.status === 200) {
-        console.log("print", response.data.ReceipdID);
-        if (printStatus === true)
-          handlePrintClick(response.data.ReceipdID);
-        ResetValues();
-      }
+      let status = await axios.post("http://localhost:5000/updateOTDischargeDate", { Date: date, Time: time, AID: AID });
+      alert("Date Updated");
+      if (printStatus === true)
+        handlePrintClick();
     } catch (err) {
       alert(err);
     }
-  };
+  }
+
   useEffect(() => {
-    const UpdateBankMenu = () => {
-      switch (paymentMethod) {
-        case "C":
-          setEnableBank(false);
-          break;
-        default:
-          setEnableBank(true);
-      }
-    };
-    UpdateBankMenu();
-  }, [paymentMethod]);
-  useEffect(() => {
-    getMRDDetails(IPDID);
-    getOTDischargeFormats();
-    dispatch(assignValue(props.selectedFormat.Format[1]))
-  }, []);
+    if (open) {
+      getMRDDetails(IPDID);
+      getOTDischargeFormats();
+      dispatch(assignValue(props.selectedFormat.Format[1]))
+    }
+  }, [open]);
 
   return MRDDetails != {} ? (
     <Modal
@@ -206,6 +155,18 @@ export const AddOTDischarge = (props) => {
                   }}
                   size="small"
                   type="time"
+                />
+              </Grid>
+              <Grid item marginLeft={1}>
+                <Typography fontSize={12} fontWeight="bold">
+                  AID:{" "}
+                </Typography>
+                <TextField
+                  fullWidth
+                  fontSize={12}
+                  value={AID}
+                  size="small"
+                  disabled
                 />
               </Grid>
             </Grid>
@@ -333,19 +294,21 @@ export const AddOTDischarge = (props) => {
               {/* <Typography fontSize={12} fontWeight="bold">
                 Remark:{" "}
               </Typography> */}
-              <TextEditor value={value} html={html}/>
+              <TextEditor value={value} html={html} />
             </Grid>
             <Grid container marginTop={5}>
               <Button variant="contained" onClick={() => {
-                SaveMoneyReceipt(false); handleClose();
-              }} disabled={recAmount === 0 ? true : false}> Save</Button>
+                handleClose(); updateOTDischargeDate(false);
+              }}
+              // disabled={MRDDetails.Discharge === "Y" ? true : false}
+              > Save</Button>
               <Button
                 variant="contained"
                 onClick={() => {
-                  SaveMoneyReceipt(true); handleClose();
+                  handleClose(); updateOTDischargeDate(true);
                 }}
                 style={{ marginLeft: "10px" }}
-                disabled={recAmount === 0 ? true : false}
+              // disabled={MRDDetails.Discharge === "Y" ? true : false}
               >
                 Save & Print
               </Button>

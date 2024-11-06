@@ -14,7 +14,7 @@ export const AdmissionForm = () => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDPatientDetails",
+        "http://localhost:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log(response.data[0]);
@@ -22,7 +22,7 @@ export const AdmissionForm = () => {
       setAdmDate(new Date(response.data[0].Date).toISOString().split("T")[0]);
       setAdmTime(
         convertTimeTo12HourFormat(
-          new Date(response.data[0].Time).toTimeString().split(" ")[0]
+          new Date(response.data[0].Time).toISOString().split("T")[1]
         )
       );
     } catch (error) {
@@ -36,7 +36,7 @@ export const AdmissionForm = () => {
     <>
       <Grid container>
         <Grid xs={2} item display="flex" justifyContent="start">
-          <Image src="/images/logo.jpg" width={250} height={100}/>
+          <Image src="/images/logo.jpg" width={250} height={100} />
         </Grid>
         <Grid
           xs={8}
@@ -61,13 +61,13 @@ export const AdmissionForm = () => {
           <Typography fontSize={12}>
             Email: iukd.india@gmail.com, Web: www.iukdindia.com
           </Typography>
-          <Typography fontWeight="bold" marginTop={5}>Admission Form</Typography>
+          <Typography fontWeight="bold" marginTop={3}>Admission Form</Typography>
         </Grid>
         <Grid xs={2} item display="flex" justifyContent="end">
-          
+
         </Grid>
       </Grid>
-      <Grid container marginTop={5} padding={0} >
+      <Grid container padding={0} marginTop={1} >
         {/* Patient Details */}
         <Grid container justifyContent="space-between" border="1px black solid">
           <Grid xs={6} container flexDirection="row">
@@ -282,7 +282,7 @@ export const AdmissionForm = () => {
                 </Grid>
                 <Grid item >
                   <Typography fontSize={12}>
-                    {IPDNo}
+                  IPD/23-24/{IPDNo}
                   </Typography>
                 </Grid>
               </Grid>
@@ -440,8 +440,11 @@ export const AdmissionForm = () => {
             <Typography fontSize={12}> </Typography>
           </Grid>
         </Grid>
-        <Grid display="flex" width="100vw" justifyContent="end" position="absolute" top="1000px">
-          <Typography>Nursing Incharge Name & Signature</Typography>
+        <Grid display="flex" width="100vw" justifyContent="end" position="absolute" top="1000px" >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography fontSize={12} fontWeight="bold">(Signature)</Typography>
+            <Typography fontSize={12}><b>By:</b> {MRDDetails.FirstName}</Typography>
+          </Box>
         </Grid>
       </Grid>
     </>

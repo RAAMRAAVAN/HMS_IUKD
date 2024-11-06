@@ -15,6 +15,8 @@ import {
   convertTimeTo12HourFormat,
   extractTimeFromISO,
 } from "../SelectValues";
+import { useSelector } from "react-redux";
+import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
 
 export const AddIPDMoneyReceipt = (props) => {
   const { setOpen, open, IPDID } = props;
@@ -22,8 +24,9 @@ export const AddIPDMoneyReceipt = (props) => {
     const url = `/pages/IPDModule/MoneyReceipt?ReceiptID=${ReceiptID}`;
     window.open(url, "_blank"); // Opens in a new tab
   };
+  const UserDetails = useSelector(selectUserDetails);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState(new Date().toISOString().split("T")[1].split("Z")[0]);
+  const [time, setTime] = useState(new Date().toTimeString().slice(0, 5));
   const [MRDDetails, setMRDDetails] = useState({});
   const [AdmDate, setAdmDate] = useState();
   const [AdmTime, setAdmTime] = useState();
@@ -49,7 +52,7 @@ export const AddIPDMoneyReceipt = (props) => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDPatientDetails",
+        "http://localhost:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log("money=", response.data[0]);
@@ -57,7 +60,7 @@ export const AddIPDMoneyReceipt = (props) => {
       setAdmDate(new Date(response.data[0].Date).toISOString().split("T")[0]);
       setAdmTime(
         convertTimeTo12HourFormat(
-          new Date(response.data[0].Time).toTimeString().split(" ")[0]
+          new Date(response.data[0].Time).toISOString().split("T")[1]
         )
       );
 
@@ -72,14 +75,14 @@ export const AddIPDMoneyReceipt = (props) => {
     setTrnID("");
     setRecAmount(0);
     setDate(new Date().toISOString().split("T")[0]);
-    setTime(new Date().toTimeString().split(" ")[0]);
+    setTime(new Date().toTimeString().slice(0, 5));
     setpaymentMethod("C");
     setRemark("");
   }
 
   const SaveMoneyReceipt = async (printStatus) => {
     try {
-      let response = await axios.post("http://192.168.1.32:5000/addMoneyReceipt", {
+      let response = await axios.post("http://localhost:5000/addMoneyReceipt", {
         ReceiptDate: date,
         ReceiptTime: time,
         AdmitDate: AdmDate,
@@ -92,6 +95,7 @@ export const AddIPDMoneyReceipt = (props) => {
         TotalAmount: recAmount,
         Remark: remark,
         MOD: paymentMethod,
+        UserID: UserDetails.UId,
         AccountNo: trnID,
         IPDID: MRDDetails.PrintIPDNo,
         BankID: bank,

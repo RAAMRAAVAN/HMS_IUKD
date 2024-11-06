@@ -25,7 +25,7 @@ export const DropdownMenu = (props) => {
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('userName', "");
-      setLogin(false);
+      // setLogin(false);
       handleClose();
       window.location.reload();
     }

@@ -3,7 +3,7 @@ import { Autocomplete, Button, Grid, IconButton, TextField, Typography } from "@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export const NewServiceEntry = (props) => {
+export const NewCaseEntry = (props) => {
     let [OSID, setOSID] = useState(props.OSID);
     console.log("OSID2=", props.OSID)
     const getServiceEntriesDetails = props.getServiceEntriesDetails;

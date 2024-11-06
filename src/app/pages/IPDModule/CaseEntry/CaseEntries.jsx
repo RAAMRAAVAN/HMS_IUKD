@@ -1,41 +1,55 @@
-import { Delete, EditNote, Print, Restore, SystemUpdateAlt, Upgrade, ViewAgenda } from "@mui/icons-material"
-import { Grid, IconButton, TextField, Typography } from "@mui/material"
+import { Delete, EditNote, Print, Restore, ViewAgenda } from "@mui/icons-material";
+import { Grid, IconButton, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import { CaseEntry } from "./CaseEntry";
+import { NewCaseEntry} from "./NewCaseEntry";
 
-export const VisitEntry = (props) => {
-  let [AID, setAID] = useState(props.AID);
-  let [Rate, setRate] = useState(props.Rate);
-  let [NoOfVisit, setNoOfVisit] = useState(props.NoOfVisit);
-  let [Discount, setDiscount] = useState(props.Discount);
-  let [VisitDate, setVisitDate] = useState(new Date(props.VisitDate)
+export const CaseEntries = (props) => {
+  //   const { ReceiptID } = props;
+  let [OSID, setOSID] = useState(props.ReceiptDetails.OSID);
+  console.log("OSID=", OSID)
+  const [IPDDoctorVisitListDetails, setIPDDoctorVisitListDetails] = useState([]);
+  let [ReceiptDate, setReceiptDate] = useState(new Date(props.ReceiptDetails.Date)
   .toISOString()
-  .split("T")[0]);
-  let [Amount, setAmount] = useState((Rate * NoOfVisit) - (Discount/100 * (Rate * NoOfVisit)));
-  let [User, setUser] = useState(props.User);
-  let [DoctorName, setDoctorName] = useState(props.DoctorName);
-  let [ActiveStatus, setActiveStatus] = useState(props.ActiveStatus);
-  let [DeleteStatus, setDeleteStatus] = useState(props.DeleteStatus);
-  const [ReceiptCancel, setReceiptCancel] = useState(props.ReceiptCancel)
+  .split("T")[0])
+  let [HRNo, setHRNo] = useState(props.ReceiptDetails.HRNo);
+  let [PatientName, setPatientName] = useState(
+    props.ReceiptDetails.PatientName
+  );
+  let [Remark, setRemark] = useState(props.ReceiptDetails.Remark);
+  let [ActiveStatus, setActiveStatus] = useState(props.ReceiptDetails.ActiveStatus);
+  let [DeleteStatus, setDeleteStatus] = useState(props.ReceiptDetails.DeleteStatus);
+  let [updater, setUpdater] = useState("");
 
-  console.log("ActiveStatus, DeleteStatus",AID,ActiveStatus, DeleteStatus, ReceiptCancel)
 
-  const UpdateVisitDetails = async(A, D) => {
-    // alert("UPdate",{AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
+  const getServiceEntriesDetails = async() => {
+    setIPDDoctorVisitListDetails([]);
     try{
-      let result = await axios.post('http://localhost:5000/UpdateVisitDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Date: VisitDate, NoOfVisit: NoOfVisit, Discount: Discount, Amount: Amount, Rate: Rate, User: "1"})
-      alert("Entry Updatted");
-    } catch (err) {
+        let result = await axios.post('http://localhost:5000/getServiceListDetails', {OSID: OSID});
+        console.log(result.data.IPDDoctorVisitListDetails)
+        setIPDDoctorVisitListDetails(result.data.IPDDoctorVisitListDetails)
+    }catch (err){
+        alert(err);
+    }
+  } 
+
+  const deleteOtherServiceEntries = async (Act, Del) => {
+    try{
+      let result = await axios.post('http://localhost:5000/deleteOtherServiceEntries', {OSID: OSID, ActiveStatus:Act, DeleteStatus: Del});
+      
+      getServiceEntriesDetails();
+    } catch (err){
       console.log(err);
-    } 
+    }
   }
 
   useEffect(()=>{
-    setAmount((Rate * NoOfVisit) - (Discount/100 * (Rate * NoOfVisit)));
-    // UpdateVisitDetails();
-  },[Rate, Discount, VisitDate, NoOfVisit, Amount, User, ActiveStatus, DeleteStatus]);
-    return(<> 
-    <Grid container backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}>
+    getServiceEntriesDetails();
+  },[]);
+  return (
+    <span >
+      <Grid container style={ActiveStatus === "Y"?{backgroundColor:"yellow"}:{backgroundColor:"red"}}>
         {/* <Grid
               xs={1}
               border="1px black solid"
@@ -55,7 +69,7 @@ export const VisitEntry = (props) => {
           display="flex"
         >
           <Typography fontWeight="bold" fontSize={10}>
-            {/* {ReceiptID} */}
+            {OSID}
           </Typography>
         </Grid>
         <Grid
@@ -66,7 +80,7 @@ export const VisitEntry = (props) => {
           alignItems="center"
           display="flex"
         >
-          <TextField fontWeight="bold" value={VisitDate} onChange={(e)=>{setVisitDate(e.target.value)}} fontSize={10} type="date" size="small" padding={0} style={{margin:"0"}} fullWidth/>
+          <TextField fontWeight="bold" value={ReceiptDate} onChange={(e)=>{setReceiptDate(e.target.value)}} fontSize={10} type="date" size="small" padding={0} style={{margin:"0"}} fullWidth/>
         </Grid>
         <Grid
           xs={2}
@@ -77,52 +91,31 @@ export const VisitEntry = (props) => {
           display="flex"
         >
           <Typography fontWeight="bold" fontSize={10}>
-            {DoctorName}
+            {/* {HRNo} */}
           </Typography>
         </Grid>
         <Grid
           xs={1}
           border="1px black solid"
-          // padding={1}
+          padding={1}
           item
           alignItems="center"
           display="flex"
         >
-          <TextField value={NoOfVisit} onChange={(e)=>{setNoOfVisit(e.target.value)}} size="small"/>
+          <Typography fontWeight="bold" fontSize={10}>
+            {/* {PatientName} */}
+          </Typography>
         </Grid>
 
         <Grid
           xs={1}
           border="1px black solid"
-          // padding={1}
+          padding={1}
           item
           alignItems="center"
           display="flex"
         >
-          {/* <Typography fontWeight="bold" fontSize={10}>{Rate}</Typography> */}
-          <TextField value={Rate} onChange={(e)=>{setRate(e.target.value)}} fontSize={10} size="small"/>
-        </Grid>
-
-        <Grid
-          xs={1}
-          border="1px black solid"
-          // padding={1}
-          item
-          alignItems="center"
-          display="flex"
-        >
-          <TextField value={Discount} onChange={(e)=>{setDiscount(e.target.value)}} size="small"/>
-        </Grid>
-
-        <Grid
-          xs={1}
-          border="1px black solid"
-          // padding={1}
-          item
-          alignItems="center"
-          display="flex"
-        >
-          <TextField value={Amount} size="small"/>
+          <Typography fontWeight="bold" fontSize={10}></Typography>
         </Grid>
 
         <Grid
@@ -134,7 +127,7 @@ export const VisitEntry = (props) => {
           display="flex"
         >
           <Typography fontWeight="bold" fontSize={10}>
-            {User}
+            {/* Receipt Amount */}
           </Typography>
         </Grid>
 
@@ -147,7 +140,33 @@ export const VisitEntry = (props) => {
           display="flex"
         >
           <Typography fontWeight="bold" fontSize={10}>
-            {/* {Remark} */}
+            
+          </Typography>
+        </Grid>
+
+        <Grid
+          xs={1}
+          border="1px black solid"
+          padding={1}
+          item
+          alignItems="center"
+          display="flex"
+        >
+          <Typography fontWeight="bold" fontSize={10}>
+            {/* Receipt Type */}
+          </Typography>
+        </Grid>
+
+        <Grid
+          xs={1}
+          border="1px black solid"
+          padding={1}
+          item
+          alignItems="center"
+          display="flex"
+        >
+          <Typography fontWeight="bold" fontSize={10}>
+            {Remark}
           </Typography>
         </Grid>
 
@@ -163,7 +182,7 @@ export const VisitEntry = (props) => {
           <IconButton
             aria-label="delete"
             size="small"
-            style={{ padding: "0", margin: "0", display:"none" }}
+            style={{ padding: "0", margin: "0" }}
             //   onClick={() => handleUpdateOpen(receipt.ReceiptID)}
           >
             <EditNote
@@ -181,7 +200,7 @@ export const VisitEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0" }}
-            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y");UpdateVisitDetails("N", "Y")}}
+            onClick={() => {setActiveStatus("N"); setDeleteStatus("Y"); deleteOtherServiceEntries("N", "Y");}}
           >
             <Delete
               size="small"
@@ -197,8 +216,8 @@ export const VisitEntry = (props) => {
           <IconButton
             aria-label="delete"
             size="small"
-            style={{ padding: "0", margin: "0"}}
-            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N");UpdateVisitDetails("Y", "N")}}
+            style={{ padding: "0", margin: "0" }}
+              onClick={() => {setActiveStatus("Y"); setDeleteStatus("N"); deleteOtherServiceEntries("Y", "N");}}
           >
             <Restore
               size="small"
@@ -214,10 +233,10 @@ export const VisitEntry = (props) => {
           <IconButton
             aria-label="delete"
             size="small"
-            style={{ padding: "0", margin: "0"}}
-              
+            style={{ padding: "0", margin: "0" }}
+            //   onClick={() => handlePrintClick(receipt.ReceiptID)}
           >
-            <SystemUpdateAlt
+            <Print
               size="small"
               style={{
                 padding: "0",
@@ -225,10 +244,12 @@ export const VisitEntry = (props) => {
                 display: "flex",
                 height: "20px",
               }}
-              onClick={()=>UpdateVisitDetails(ActiveStatus, DeleteStatus)}
             />
           </IconButton>
         </Grid>
       </Grid>
-    </>)
-}
+      {IPDDoctorVisitListDetails.map((entry, index) => {return(<CaseEntry AID={entry.AID} ReceiptCancel={ActiveStatus} ActiveStatus={entry.ActiveStatus} DeleteStatus={entry.DeleteStatus} Rate={entry.Rate} Qty={entry.Qty} Discount={entry.Discount} VisitDate={entry.Date} Amount={entry.Amount} User={entry.FirstName} ReportingName={entry.ReportingName}/>)})}
+      <NewCaseEntry OSID={OSID} getServiceEntriesDetails={getServiceEntriesDetails}/>
+    </span>
+  );
+};

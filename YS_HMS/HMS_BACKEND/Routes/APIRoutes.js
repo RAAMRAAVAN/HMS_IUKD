@@ -9,7 +9,7 @@ const { getPharmacyCollection } = require('../controllers/pharmacyController');
 const { getWardCollection } = require('../controllers/wardController');
 const { getIPDAdmissionDetails } = require('../controllers/patientController');
 const { IPDBillDetails, fetchDoctorVisits, fetchOtherServices, fetchPharmacyBills, fetchDiagonasticCharges, fetchOTBills, fetchAssistantSurgeonCharge, fetchAnesthesiaCharge, fetchOTServiceCharge } = require('../controllers/ipdBillController');
-const { fetchOtDischarge, fetchOtDischargeDetails, getOTDischargeFormats } = require('../controllers/otDischargeController');
+const { fetchOtDischarge, fetchOtDischargeDetails, getOTDischargeFormats, updateOTDischargeDate } = require('../controllers/otDischargeController');
 const {fetchUserDetails} = require('../controllers/userController')
 const { fetchIPDMoneyReceipts, fetchIPDBillDetails, fetchIPDBillDet, fetchIPDMoneyReceiptDetails, deleteIPDMoneyReceipt, addMoneyReceipt, getMoneyReceiptDetails, updateMoneyReceipt } = require('../controllers/ipdMoneyReceiptController');
 const { fetchIPDDoctorVisitList, getVisitListDetails, UpdateVisitDetails, deleteDoctorVisitEntries, getDoctorList, AddDoctorVisit, CreateDoctorVisit, getDoctorVisitPermissions } = require('../controllers/ipdDoctorVisit');
@@ -59,6 +59,7 @@ router.post('/fetchOTServiceCharge', fetchOTServiceCharge)
 router.post('/fetchOtDischarge', fetchOtDischarge)
 router.post('/fetchOtDischargeDetails', fetchOtDischargeDetails)
 router.get('/getOTDischargeFormats', getOTDischargeFormats);
+router.post('/updateOTDischargeDate', updateOTDischargeDate)
 
 router.post('/fetchIPDMoneyReceipts', fetchIPDMoneyReceipts)
 router.post('/fetchIPDMoneyReceiptDetails', fetchIPDMoneyReceiptDetails)
@@ -83,4 +84,7 @@ router.get('/getServiceList', getServiceList)
 router.post('/AddService', AddService)
 router.post('/deleteOtherServiceEntries', deleteOtherServiceEntries)
 router.post('/CreateOtherService', CreateOtherService)
+
+//CASE ENTRY
+router.post('/fetchIPDCaseEntry', phatologyController.fetchIPDCaseEntry)
 module.exports = router;

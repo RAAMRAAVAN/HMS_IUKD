@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Favorite } from "@mui/icons-material";
 import { IPDAdmission } from "./IPDAdmission";
 import { IPDBill } from "./IPDBill";
+import {LabCaseEntry} from "./CaseEntry/LabCaseEntry";
 import { OTDischarge } from "./OTDischarge/OTDischarge";
 import { MoneyReceipt } from "./MoneyReceipt/MoneyReceipt";
 import { DoctorVisit } from "./DoctorVisit/DoctorVisit";
@@ -51,12 +52,24 @@ export const IPDNav = () => {
             alert(err)
         }
     }
-
+    //438
+    const getIPDMoneyReceiptPermissions = async () => {
+        try{
+            let value = await getPermissions(UserDetails.UId, 438)
+            value === "True"?setPermissions(prevPermissions => ({
+                ...prevPermissions,
+                IPDMoneyReceipt: true,
+            })):null;
+        }catch(err){
+            alert(err)
+        }
+    }
     useEffect(() => {
         if(UserDetails != {})
         {   console.log("User Details=", UserDetails);
             getDoctorVisitPermissions();
             getOtherServicePermissions();
+            getIPDMoneyReceiptPermissions();
         }
     }, [])
     return IPDNo != null ? (<>
@@ -77,27 +90,23 @@ export const IPDNav = () => {
                         >
                             <Tab label="Patient Admission" value="1" icon={<Favorite />} iconPosition='start' />
 
-                            <Tab label="IPD BILL" value="2" />
-
-                            <Tab label="Discharge Summary" value="3" />
-                            <Tab label="OT Billing" value="4" />
+                            {Permissions.DoctorVisit?<Tab label="Case Entry" value="2" />:null}
                             {Permissions.DoctorVisit?<Tab label="Doctor Visit" value="5" />:null}
                             
                             {Permissions.OtherService?<Tab label="Medical Service" value="6" />:null}
                             {Permissions.IPDMoneyReceipt?<Tab label="Money Receipt" value="7" />:null}
-                            <Tab label="Money Receipt" value="7" />
-                            {/* <Tab label="Bed Transfer" value="9" />
-
-                            <Tab label="Discharge" value="9" />
-
-                            <Tab label="Estimate Bill" value="9" />
-                            <Tab label="Final Bill" value="9" /> */}
+                            <Tab label="OT Billing" value="4" />
+                            <Tab label="Discharge Summary" value="3" />
+                            <Tab label="IPD BILL" value="8" />
                         </TabList>
                     </Box>
                     <TabPanel value="1" sx={{ padding: "0", margin: "0" }}>
                         <IPDAdmission />
                     </TabPanel>
                     <TabPanel value="2" sx={{ padding: "0", margin: "0" }}>
+                        <LabCaseEntry/>
+                    </TabPanel>
+                    <TabPanel value="8" sx={{ padding: "0", margin: "0" }}>
                         <IPDBill />
                     </TabPanel>
                     <TabPanel value="3">

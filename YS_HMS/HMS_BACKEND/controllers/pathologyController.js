@@ -106,3 +106,23 @@ res.json({caseEntries: result1.recordset, dueCollect: result2.recordset});
   res.status(500).json({ error: "Database query error" });
 }
 };
+
+
+exports.fetchIPDCaseEntry = async(req, res) => {
+  const {IPAID} = req.body;
+  const request = new sql.Request();
+  const query = `select CE.CaseID, CE.CaseNo, CE.CaseDate, CE.GrandTotal, CE.NetAmount,CE.CaseTime,DiscountRs, CE.LabSINo, DM.DoctorName, UM.FirstName, MOD from Trn_CaseEntry AS CE
+join 
+M_DoctorMaster AS DM
+ON DM.DrId = CE.DoctorID
+join
+M_UserMaster AS UM
+ON UM.UId = CE.UserID
+where CE.IPDID='${IPAID}' AND CE.ActiveStatus='Y' AND CE.DeleteStatus='N'`
+  try{
+    const IPDCaseEntry = await request.query(query);
+    res.json({IPDCaseEntry: IPDCaseEntry.recordset})
+  }catch(err){
+    res.status(500).json({error: err})
+  }
+}

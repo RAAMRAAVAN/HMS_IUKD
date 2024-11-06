@@ -19,16 +19,16 @@ export const PrintOTDischarge = () => {
   const getOTDischargeDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchOtDischargeDetails",
+        "http://localhost:5000/fetchOtDischargeDetails",
         {
           PId: input,
         }
       );
       SetOTDischargeDetails(response.data.otDischarge[0]);
       setAdmDate(new Date(response.data.otDischarge[0].AdmDate).toISOString().split("T")[0])
-      setAdmTime(convertTimeTo12HourFormat(new Date(response.data.otDischarge[0].AdmTime).toTimeString().split(" ")[0]));
+      setAdmTime(convertTimeTo12HourFormat(new Date(response.data.otDischarge[0].AdmTime).toISOString().split("T")[1]));
       setDate(new Date(response.data.otDischarge[0].Date).toISOString().split("T")[0]);
-      setTime(convertTimeTo12HourFormat(new Date(response.data.otDischarge[0].Time).toTimeString().split(" ")[0]));
+      setTime(convertTimeTo12HourFormat(new Date(response.data.otDischarge[0].Time).toISOString().split("T")[1]));
     } catch (error) {
       alert(error);
     }

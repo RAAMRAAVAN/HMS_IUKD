@@ -13,11 +13,11 @@ export const MRDForm = () => {
   const [AdmTime, setAdmTime] = useState();
   const getMRDDetails = async(input) => {
     try{
-      const response = await axios.post("http://192.168.1.32:5000/fetchIPDPatientDetails", {IPDNo: input})
+      const response = await axios.post("http://localhost:5000/fetchIPDPatientDetails", {IPDNo: input})
       console.log(response.data[0])
       setMRDDetails(response.data[0])
       setAdmDate(new Date(response.data[0].Date).toISOString().split("T")[0])
-      setAdmTime(convertTimeTo12HourFormat(new Date(response.data[0].Time).toTimeString().split(" ")[0]));
+      setAdmTime(convertTimeTo12HourFormat(new Date(response.data[0].Time).toISOString().split("T")[1]));
     } catch (error) {
       alert("DB Error")
     }

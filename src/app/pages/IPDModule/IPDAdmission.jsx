@@ -173,7 +173,7 @@ export const IPDAdmission = (props) => {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/admission_resources"
+        "http://localhost:5000/admission_resources"
       );
       console.log(response);
       setOccupationList(response.data.occupations);
@@ -194,7 +194,7 @@ export const IPDAdmission = (props) => {
   const getFilteredPatients = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/filtered_patient",
+        "http://localhost:5000/filtered_patient",
         {
           like_name: input,
         }
@@ -208,7 +208,7 @@ export const IPDAdmission = (props) => {
   const updateIPDAdmission = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/update-ipd-details", input
+        "http://localhost:5000/update-ipd-details", input
       );
       console.log("POST Result", response);
       if (response.data.UpdateStatus.rowsAffected[0] >= 1)
@@ -222,7 +222,7 @@ export const IPDAdmission = (props) => {
   const getIPDAdmissionDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDPatientDetails",
+        "http://localhost:5000/fetchIPDPatientDetails",
         {
           IPDNo: input,
         }
@@ -230,7 +230,7 @@ export const IPDAdmission = (props) => {
       console.log("Patient Found = ", response.data[0])
       setDate(new Date(response.data[0].Date).toISOString().split("T")[0])
       console.log("Date=", new Date(response.data[0].Date).toISOString().split("T")[0])
-      setTime(new Date(response.data[0].Time).toTimeString().split(" ")[0])
+      setTime(new Date(response.data[0].Time).toISOString().split("T")[1].split("Z")[0])
       setTitle(setTitleValue(response.data[0].TitelID))
       // setIpdNo(response.data[0].IPDNo)
       setPatientName(response.data[0].PatientName)

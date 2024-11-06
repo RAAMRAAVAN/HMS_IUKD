@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 
-export const CreateOtherServiceEntry = (props) => {
+export const CreateNewCaseEntry = (props) => {
     let {open, setOpen, IPDID, fetchIPDOtherServiceList}=props;
     console.log("CreateIPDDoctorVisit=", open, IPDID)
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);

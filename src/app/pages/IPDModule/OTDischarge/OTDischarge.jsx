@@ -21,7 +21,7 @@ export const OTDischarge = () => {
   const fetchOtDischarge = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchOtDischarge",
+        "http://localhost:5000/fetchOtDischarge",
         {
           IPAID: input,
         }
@@ -140,7 +140,7 @@ export const OTDischarge = () => {
         {otDischargeList.map((discharge, index) => {
           return (
             <Grid container>
-              <AddOTDischarge setOpen={setOpen} open={open} IPDID={IPDNo} selectedFormat= {{DischargeFormatId:discharge.DischargeFormatId, DischargeFormatName:discharge.DischargeFormatName, Format:discharge.Format}}/>
+              <AddOTDischarge setOpen={setOpen} open={open} IPDID={IPDNo} AID={discharge.AID} PId={discharge.PId} selectedFormat= {{DischargeFormatId:discharge.DischargeFormatId, DischargeFormatName:discharge.DischargeFormatName, Format:discharge.Format}}/>
               <Grid
                 xs={1}
                 border="1px black solid"

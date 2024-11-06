@@ -17,17 +17,17 @@ export const TextEditor = (props) => {
     // const [html, setHtml] = useState(true); // State to toggle between editor and text area
 
     // Function to format HTML using prettier
-    const formatHTML = (htmlString) => {
-        // Uncomment the following line if using minify
-        // const minified = minify(htmlString, { collapseWhitespace: true, removeComments: true });
+    // const formatHTML = (htmlString) => {
+    //     // Uncomment the following line if using minify
+    //     // const minified = minify(htmlString, { collapseWhitespace: true, removeComments: true });
 
-        return prettier.format(htmlString, {
-            parser: 'html',
-            plugins: [parserHTML],
-            printWidth: 80,
-            tabWidth: 2,
-        });
-    };
+    //     return prettier.format(htmlString, {
+    //         parser: 'html',
+    //         plugins: [parserHTML],
+    //         printWidth: 80,
+    //         tabWidth: 2,
+    //     });
+    // };
 
     const handleEditorChange = (event, editor) => {
         const data = editor.getData();
@@ -36,10 +36,10 @@ export const TextEditor = (props) => {
     };
 
     // const formattedHTML = formatHTML(); // Format the current editor data
-    useEffect(()=>{
-        // if(html === true)
-        formatHTML(editorData)
-    },[editorData, html])
+    // useEffect(()=>{
+    //     // if(html === true)
+    //     formatHTML(editorData)
+    // },[editorData, html])
     return html === true ? (<Box sx={{ display: "flex", width: "100%", border: "1px black solid" }}>
         <TextField
             value={editorData} // Display formatted HTML or raw editor data

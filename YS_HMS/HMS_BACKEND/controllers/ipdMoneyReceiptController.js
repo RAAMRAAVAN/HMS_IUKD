@@ -100,7 +100,7 @@ exports.fetchIPDMoneyReceiptDetails = async(req, res) => {
 
 
 exports.addMoneyReceipt = async(req, res) => {
-    const {ReceiptDate, ReceiptTime, AdmitDate, HRNo, WardID, BedID, PatientName, IPDNo, Address, TotalAmount, Remark, MOD, AccountNo, IPDID, BankID} = req.body;
+    const {ReceiptDate, ReceiptTime, AdmitDate, HRNo, UserID,WardID, BedID, PatientName, IPDNo, Address, TotalAmount, Remark, MOD, AccountNo, IPDID, BankID} = req.body;
     const request = new sql.Request();
     const LastMoneyReceiptQuery = `select TOP 1 * from Trn_IPDMoneyReceipt ORDER BY ReceiptID DESC `
     // console.log(ReceiptDate, ReceiptTime, AdmitDate, HRNo, WardID, BedID, PatientName, IPDNo, Address, TotalAmount, Remark, MOD, AccountNo, IPDID, BankID)
@@ -111,7 +111,7 @@ try{
     // VALUES('1', '1000001', '${LastMoneyReceipt.recordset[0].ReceiptID + 1}', 'IMR-0000000000', '${ReceiptDate} 00:00:00.000', '1900-01-01 ${ReceiptTime}', 'RA', '${AdmitDate} 00:00:00.000', '${HRNo}', '${WardID}', '${BedID}', '0', '${PatientName}', '${IPDNo}', '${Address}', '${TotalAmount}', '0.00', '${TotalAmount}', '${TotalAmount}', '0.00', '${Remark}','N', '2024-09-28 08:55:22.470', '0', 'N', '1', 'Y', 'N', '1', '${ReceiptDate} ${ReceiptTime}', '08-BF-B8-74-07-C1', '0', '1900-01-01 00:00:00.000', 'Y', '${ReceiptDate} ${ReceiptTime}', '${MOD}', '${BankID}', '${AccountNo}', '${IPDID}', '10000000', '${ReceiptDate} 00:00:00.000', 'N', '0')
     // `);
     const status = await request.query(`INSERT INTO Trn_IPDMoneyReceipt (BranchID, HospitalID,ReceiptID, ReceiptNo, ReceiptDate, ReceiptTime, ReceiptType, AdmitDate, HRNo, WardID, BedID, Age, PatientName, IPDNo, Address, TotalAmount, DiscountAmount, NetAmount, RecAmount, DueAmount, Remark, ReceiptCancel, ReceiptCancelDate, ReceiptCancelUserID, EntryType, FYearID, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUserID, ModifyDate, IsUpload, IsUploadRTS, MOD, BankID, AccountNo, IPDID, PrintReceiptNo, CheckTrnsDate, CompanyType, CompanyID) 
-VALUES('1', '1000001', '${LastMoneyReceipt.recordset[0].ReceiptID + 1}', '${replaceDigits(LastMoneyReceipt.recordset[0].ReceiptID + 1)}', '${ReceiptDate} 00:00:00.000', '1900-01-01 ${ReceiptTime}', 'RA', '${AdmitDate} 00:00:00.000', '${HRNo}', '${WardID}', '${BedID}', '0', '${PatientName}', 'IPD/23-24/${IPDNo}', '${Address}', '${TotalAmount}', '0.00', '${TotalAmount}', '${TotalAmount}', '0.00', '${Remark}','N', '2024-09-28 08:55:22.470', '0', 'N', '1', 'Y', 'N', '1', '${ReceiptDate} ${ReceiptTime}', '08-BF-B8-74-07-C1', '0', '1900-01-01 00:00:00.000', 'Y', '${ReceiptDate} ${ReceiptTime}', '${MOD}', '${BankID}', '${AccountNo}', '${IPDID}', '${replaceDigits2(LastMoneyReceipt.recordset[0].ReceiptID + 1)}', '${ReceiptDate} 00:00:00.000', 'N', '0')
+VALUES('1', '1000001', '${LastMoneyReceipt.recordset[0].ReceiptID + 1}', '${replaceDigits(LastMoneyReceipt.recordset[0].ReceiptID + 1)}', '${ReceiptDate} 00:00:00.000', '1900-01-01 ${ReceiptTime}', 'RA', '${AdmitDate} 00:00:00.000', '${HRNo}', '${WardID}', '${BedID}', '0', '${PatientName}', 'IPD/23-24/${IPDNo}', '${Address}', '${TotalAmount}', '0.00', '${TotalAmount}', '${TotalAmount}', '0.00', '${Remark}','N', '2024-09-28 08:55:22.470', '0', 'N', '1', 'Y', 'N', '${UserID}', '${ReceiptDate} ${ReceiptTime}', '08-BF-B8-74-07-C1', '0', '1900-01-01 00:00:00.000', 'Y', '${ReceiptDate} ${ReceiptTime}', '${MOD}', '${BankID}', '${AccountNo}', '${IPDID}', '${replaceDigits2(LastMoneyReceipt.recordset[0].ReceiptID + 1)}', '${ReceiptDate} 00:00:00.000', 'N', '0')
 `);
   res.status(200).json({ReceipdID: LastMoneyReceipt.recordset[0].ReceiptID + 1})
 }catch (err) {
@@ -120,12 +120,12 @@ VALUES('1', '1000001', '${LastMoneyReceipt.recordset[0].ReceiptID + 1}', '${repl
 }
 
 exports.updateMoneyReceipt = async (req, res) => {
-    const {ReceiptDate, ReceiptTime, TotalAmount, Remark, MOD, AccountNo, ReceiptID, BankID} = req.body;
+    const {ReceiptDate, ReceiptTime, TotalAmount, Remark,MOD, AccountNo, ReceiptID, BankID} = req.body;
     const request = new sql.Request();
     // console.log(ReceiptDate, ReceiptTime, TotalAmount, Remark, MOD, AccountNo, ReceiptID, BankID)
     
 try{
-    const status = await request.query(`UPDATE Trn_IPDMoneyReceipt SET ReceiptDate='${ReceiptDate} 00:00:00.000', ReceiptTime='1900-01-01 ${ReceiptTime}.000', TotalAmount='${TotalAmount}',NetAmount='${TotalAmount}', RecAmount='${TotalAmount}', Remark='${Remark}', MOD='${MOD}', BankID='${BankID}', AccountNo='${AccountNo}' WHERE ReceiptID='${ReceiptID}'`);
+    const status = await request.query(`UPDATE Trn_IPDMoneyReceipt SET ReceiptDate='${ReceiptDate} 00:00:00.000', ReceiptTime='1900-01-01 ${ReceiptTime}', TotalAmount='${TotalAmount}',NetAmount='${TotalAmount}', RecAmount='${TotalAmount}', Remark='${Remark}', MOD='${MOD}', BankID='${BankID}', AccountNo='${AccountNo}' WHERE ReceiptID='${ReceiptID}'`);
     // console.log(status)
   res.status(200).json({status: status, ReceiptID: ReceiptID})
 }catch (err) {
