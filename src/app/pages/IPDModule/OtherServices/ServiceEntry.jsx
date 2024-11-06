@@ -21,14 +21,14 @@ export const ServiceEntry = (props) => {
 
   console.log("ActiveStatus, DeleteStatus",AID,ActiveStatus, DeleteStatus)
 
-  const UpdateServiceDetails = async() => {
+  const UpdateServiceDetails = async(A, D) => {
     // alert("Update", {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"});
     try{
-      let result = await axios.post('http://localhost:5000/UpdateServiceDetails', {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
+      let result = await axios.post('http://192.168.1.32:5000/UpdateServiceDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
     } catch (err) {
       console.log(err);
     } 
-    alert("Entry Updated")
+    // alert("Entry Updated")
   }
 
   useEffect(()=>{
@@ -78,7 +78,7 @@ export const ServiceEntry = (props) => {
           alignItems="center"
           display="flex"
         >
-          <Typography fontWeight="bold" fontSize={10}>
+          <Typography fontWeight="bold" fontSize={12}>
             {reportingName}
           </Typography>
         </Grid>
@@ -183,7 +183,7 @@ export const ServiceEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0" }}
-            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y")}}
+            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y"); UpdateServiceDetails("N", "Y");}}
           >
             <Delete
               size="small"
@@ -200,7 +200,7 @@ export const ServiceEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0"}}
-            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N")}}
+            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N"); UpdateServiceDetails("Y", "N")}}
           >
             <Restore
               size="small"
@@ -227,7 +227,7 @@ export const ServiceEntry = (props) => {
                 display: "flex",
                 height: "20px",
               }}
-              onClick={()=>UpdateServiceDetails()}
+              onClick={()=>UpdateServiceDetails(ActiveStatus, DeleteStatus)}
             />
           </IconButton>
         </Grid>

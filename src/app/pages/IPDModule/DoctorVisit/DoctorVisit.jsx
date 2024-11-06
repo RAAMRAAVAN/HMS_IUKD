@@ -61,7 +61,7 @@ export const DoctorVisit = () => {
     setIPDDoctorVisitList([])
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDDoctorVisitList",
+        "http://192.168.1.32:5000/fetchIPDDoctorVisitList",
         {
           IPDID: input,
         }
@@ -76,7 +76,7 @@ export const DoctorVisit = () => {
   const deleteIPDMoneyReceipt = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/deleteIPDMoneyReceipt",
+        "http://192.168.1.32:5000/deleteIPDMoneyReceipt",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -181,7 +181,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Receipt No
             </Typography>
           </Grid>
@@ -193,7 +193,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Entry/ Visit Date
             </Typography>
           </Grid>
@@ -205,7 +205,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Doctor's Name
             </Typography>
           </Grid>
@@ -217,8 +217,8 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
-              Number of Visit
+            <Typography fontWeight="bold" fontSize={14}>
+              Visits
             </Typography>
           </Grid>
 
@@ -230,7 +230,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Rate
             </Typography>
           </Grid>
@@ -243,7 +243,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Discount %
             </Typography>
           </Grid>
@@ -256,7 +256,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Amount
             </Typography>
           </Grid>
@@ -269,7 +269,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               User
             </Typography>
           </Grid>
@@ -282,7 +282,7 @@ export const DoctorVisit = () => {
               alignItems="center"
               display="flex"
             >
-              <Typography fontWeight="bold" fontSize={10}>
+              <Typography fontWeight="bold" fontSize={14}>
                 Remark
               </Typography>
             </Grid>
@@ -297,7 +297,7 @@ export const DoctorVisit = () => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Action
             </Typography>
           </Grid>

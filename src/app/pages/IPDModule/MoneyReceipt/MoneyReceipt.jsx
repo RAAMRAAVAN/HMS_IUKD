@@ -55,7 +55,7 @@ export const MoneyReceipt = (props) => {
   const fetchIPDMoneyReceipts = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDMoneyReceipts",
+        "http://192.168.1.32:5000/fetchIPDMoneyReceipts",
         {
           IPDID: input,
         }
@@ -69,7 +69,7 @@ export const MoneyReceipt = (props) => {
   const deleteIPDMoneyReceipt = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/deleteIPDMoneyReceipt",
+        "http://192.168.1.32:5000/deleteIPDMoneyReceipt",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -140,7 +140,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               Receipt No
             </Typography>
           </Grid>
@@ -152,8 +152,8 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
-              Date
+            <Typography fontWeight="bold" fontSize={12}>
+              HRNO
             </Typography>
           </Grid>
           <Grid
@@ -164,8 +164,8 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
-              HRNO
+            <Typography fontWeight="bold" fontSize={12}>
+              Date
             </Typography>
           </Grid>
           <Grid
@@ -176,7 +176,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               Patient Name
             </Typography>
           </Grid>
@@ -189,7 +189,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               MOD
             </Typography>
           </Grid>
@@ -202,7 +202,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               Receipt Amount
             </Typography>
           </Grid>
@@ -215,7 +215,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               User
             </Typography>
           </Grid>
@@ -228,7 +228,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               Receipt Type
             </Typography>
           </Grid>
@@ -241,7 +241,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               Remark
             </Typography>
           </Grid>
@@ -254,7 +254,7 @@ export const MoneyReceipt = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={12}>
               Action
             </Typography>
           </Grid>
@@ -279,7 +279,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{receipt.ReceiptID}</Typography>
+                <Typography fontSize={12}>{receipt.ReceiptID}</Typography>
               </Grid>
               <Grid
                 xs={1}
@@ -289,7 +289,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{receipt.HRNo}</Typography>
+                <Typography fontSize={12}>{receipt.HRNo}</Typography>
               </Grid>
               <Grid
                 xs={1}
@@ -299,7 +299,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>
+                <Typography fontSize={12}>
                   {formatDateTime(receipt.ReceiptDate).Date}
                 </Typography>
               </Grid>
@@ -311,7 +311,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10} flexWrap="wrap">
+                <Typography fontSize={12} flexWrap="wrap">
                   {receipt.PatientName}
                 </Typography>
               </Grid>
@@ -324,7 +324,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{setMOP(receipt.MOD)}</Typography>
+                <Typography fontSize={12}>{setMOP(receipt.MOD)}</Typography>
               </Grid>
 
               <Grid
@@ -335,7 +335,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{receipt.RecAmount}</Typography>
+                <Typography fontSize={12}>{receipt.RecAmount}</Typography>
               </Grid>
 
               <Grid
@@ -346,7 +346,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{receipt.FirstName}</Typography>
+                <Typography fontSize={12}>{receipt.FirstName}</Typography>
               </Grid>
 
               <Grid
@@ -357,7 +357,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{receipt.ReceiptType}</Typography>
+                <Typography fontSize={12}>{receipt.ReceiptType}</Typography>
               </Grid>
 
               <Grid
@@ -368,7 +368,7 @@ export const MoneyReceipt = (props) => {
                 alignItems="center"
                 display="flex"
               >
-                <Typography fontSize={10}>{receipt.Remark}</Typography>
+                <Typography fontSize={12}>{receipt.Remark}</Typography>
               </Grid>
 
               <Grid

@@ -61,7 +61,7 @@ export const OtherServices = (props) => {
     setOtherServicesList([])
     try {
       const response = await axios.post(
-        "http://localhost:5000/OtherServicesList",
+        "http://192.168.1.32:5000/OtherServicesList",
         {
           IPDID: input,
         }
@@ -76,7 +76,7 @@ export const OtherServices = (props) => {
   const deleteOtherServiceEntries = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/deleteOtherServiceEntries",
+        "http://192.168.1.32:5000/deleteOtherServiceEntries",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -181,7 +181,7 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Receipt No
             </Typography>
           </Grid>
@@ -193,8 +193,8 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
-              Entry/ Visit Date
+            <Typography fontWeight="bold" fontSize={14}>
+              Entry Date
             </Typography>
           </Grid>
           <Grid
@@ -205,8 +205,8 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
-              Doctor's Name
+            <Typography fontWeight="bold" fontSize={14}>
+              Service Name
             </Typography>
           </Grid>
           <Grid
@@ -217,8 +217,8 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
-              Number of Visit
+            <Typography fontWeight="bold" fontSize={14}>
+              Qty
             </Typography>
           </Grid>
 
@@ -230,7 +230,7 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Rate
             </Typography>
           </Grid>
@@ -243,7 +243,7 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Discount
             </Typography>
           </Grid>
@@ -256,7 +256,7 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Amount
             </Typography>
           </Grid>
@@ -269,7 +269,7 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               User
             </Typography>
           </Grid>
@@ -282,7 +282,7 @@ export const OtherServices = (props) => {
               alignItems="center"
               display="flex"
             >
-              <Typography fontWeight="bold" fontSize={10}>
+              <Typography fontWeight="bold" fontSize={14}>
                 Remark
               </Typography>
             </Grid>
@@ -297,7 +297,7 @@ export const OtherServices = (props) => {
             alignItems="center"
             display="flex"
           >
-            <Typography fontWeight="bold" fontSize={10}>
+            <Typography fontWeight="bold" fontSize={14}>
               Action
             </Typography>
           </Grid>

@@ -120,7 +120,7 @@ export const IPDNav = () => {
                         <OtherServices />
                     </TabPanel>
                     <TabPanel value="7"><MoneyReceipt /></TabPanel>
-                    <TabPanel value="8">Panel Two</TabPanel>
+                    <TabPanel value="10">Panel Two</TabPanel>
                     <TabPanel value="9">asd</TabPanel>
                 </TabContext>
             </Box>
