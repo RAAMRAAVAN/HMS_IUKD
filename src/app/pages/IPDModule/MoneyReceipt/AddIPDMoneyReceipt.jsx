@@ -52,7 +52,7 @@ export const AddIPDMoneyReceipt = (props) => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDPatientDetails",
+        "http://localhost:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log("money=", response.data[0]);
@@ -82,7 +82,7 @@ export const AddIPDMoneyReceipt = (props) => {
 
   const SaveMoneyReceipt = async (printStatus) => {
     try {
-      let response = await axios.post("http://192.168.1.32:5000/addMoneyReceipt", {
+      let response = await axios.post("http://localhost:5000/addMoneyReceipt", {
         ReceiptDate: date,
         ReceiptTime: time,
         AdmitDate: AdmDate,

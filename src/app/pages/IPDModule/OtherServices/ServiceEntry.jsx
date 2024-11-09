@@ -24,7 +24,7 @@ export const ServiceEntry = (props) => {
   const UpdateServiceDetails = async(A, D) => {
     // alert("Update", {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"});
     try{
-      let result = await axios.post('http://192.168.1.32:5000/UpdateServiceDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
+      let result = await axios.post('http://localhost:5000/UpdateServiceDetails', {AID: AID, OSID: props.OSID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
     } catch (err) {
       console.log(err);
     } 
@@ -37,7 +37,7 @@ export const ServiceEntry = (props) => {
     // UpdateServiceDetails();
   },[Rate, Discount, Qty, Amount, User, ActiveStatus, DeleteStatus]);
     return(<> 
-    <Grid container backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}>
+    <Grid container >
         {/* <Grid
               xs={1}
               border="1px black solid"
@@ -55,6 +55,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <Typography fontWeight="bold" fontSize={10}>
             {/* {ReceiptID} */}
@@ -67,6 +68,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           {/* <TextField fontWeight="bold" value={VisitDate} onChange={(e)=>{setVisitDate(e.target.value)}} fontSize={10} type="date" size="small" padding={0} style={{margin:"0"}} fullWidth/> */}
         </Grid>
@@ -77,6 +79,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <Typography fontWeight="bold" fontSize={12}>
             {reportingName}
@@ -89,6 +92,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <TextField value={Qty} onChange={(e)=>{setQty(e.target.value)}} size="small"/>
         </Grid>
@@ -100,6 +104,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           {/* <Typography fontWeight="bold" fontSize={10}>{Rate}</Typography> */}
           <TextField value={Rate} onChange={(e)=>{setRate(e.target.value)}} fontSize={10} size="small"/>
@@ -112,6 +117,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <TextField value={Discount} onChange={(e)=>{setDiscount(e.target.value)}} size="small"/>
         </Grid>
@@ -123,6 +129,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <TextField value={Amount} size="small"/>
         </Grid>
@@ -134,6 +141,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <Typography fontWeight="bold" fontSize={10}>
             {User}
@@ -147,6 +155,7 @@ export const ServiceEntry = (props) => {
           item
           alignItems="center"
           display="flex"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <Typography fontWeight="bold" fontSize={10}>
             {/* {Remark} */}
@@ -159,14 +168,15 @@ export const ServiceEntry = (props) => {
           paddingX={1}
           item
           alignItems="center"
-          display="none"
+          display="flex"
           justifyContent="space-between"
+          backgroundColor={ActiveStatus === "N"?"#f7bed3":"white"}
         >
           <IconButton
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0", display:"none" }}
-            //   onClick={() => handleUpdateOpen(receipt.ReceiptID)}
+              onClick={() => handleUpdateOpen(receipt.ReceiptID)}
           >
             <EditNote
               size="small"
@@ -183,7 +193,7 @@ export const ServiceEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0" }}
-            // onClick={()=>{setActiveStatus("N");setDeleteStatus("Y"); UpdateServiceDetails("N", "Y");}}
+            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y"); UpdateServiceDetails("N", "Y");}}
           >
             <Delete
               size="small"
@@ -200,7 +210,7 @@ export const ServiceEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0"}}
-            // onClick={()=>{setActiveStatus("Y");setDeleteStatus("N"); UpdateServiceDetails("Y", "N")}}
+            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N"); UpdateServiceDetails("Y", "N")}}
           >
             <Restore
               size="small"
