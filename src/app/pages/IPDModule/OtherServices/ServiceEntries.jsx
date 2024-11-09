@@ -26,7 +26,7 @@ export const ServiceEntries = (props) => {
   const getServiceEntriesDetails = async() => {
     setIPDDoctorVisitListDetails([]);
     try{
-        let result = await axios.post('http://localhost:5000/getServiceListDetails', {OSID: OSID});
+        let result = await axios.post('http://192.168.1.32:5000/getServiceListDetails', {OSID: OSID});
         console.log(result.data.IPDDoctorVisitListDetails)
         setIPDDoctorVisitListDetails(result.data.IPDDoctorVisitListDetails)
     }catch (err){
@@ -36,7 +36,7 @@ export const ServiceEntries = (props) => {
 
   const deleteOtherServiceEntries = async (Act, Del) => {
     try{
-      let result = await axios.post('http://localhost:5000/deleteOtherServiceEntries', {OSID: OSID, ActiveStatus:Act, DeleteStatus: Del});
+      let result = await axios.post('http://192.168.1.32:5000/deleteOtherServiceEntries', {OSID: OSID, ActiveStatus:Act, DeleteStatus: Del});
       
       getServiceEntriesDetails();
     } catch (err){
@@ -170,7 +170,7 @@ export const ServiceEntries = (props) => {
           </Typography>
         </Grid>
 
-        <Grid
+        {/* <Grid
           xs={1}
           border="1px black solid"
           paddingX={1}
@@ -246,7 +246,7 @@ export const ServiceEntries = (props) => {
               }}
             />
           </IconButton>
-        </Grid>
+        </Grid> */}
       </Grid>
       {IPDDoctorVisitListDetails.map((entry, index) => {return(<ServiceEntry AID={entry.AID} ReceiptCancel={ActiveStatus} ActiveStatus={entry.ActiveStatus} DeleteStatus={entry.DeleteStatus} Rate={entry.Rate} Qty={entry.Qty} Discount={entry.Discount} VisitDate={entry.Date} Amount={entry.Amount} User={entry.FirstName} ReportingName={entry.ReportingName}/>)})}
       <NewServiceEntry OSID={OSID} getServiceEntriesDetails={getServiceEntriesDetails}/>

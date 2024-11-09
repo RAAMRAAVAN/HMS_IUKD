@@ -61,7 +61,7 @@ export const OtherServices = (props) => {
     setOtherServicesList([])
     try {
       const response = await axios.post(
-        "http://localhost:5000/OtherServicesList",
+        "http://192.168.1.32:5000/OtherServicesList",
         {
           IPDID: input,
         }
@@ -80,7 +80,7 @@ export const OtherServices = (props) => {
   const deleteOtherServiceEntries = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/deleteOtherServiceEntries",
+        "http://192.168.1.32:5000/deleteOtherServiceEntries",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {
@@ -293,7 +293,7 @@ export const OtherServices = (props) => {
 
           
 
-          <Grid
+          {/* <Grid
             xs={1}
             border="1px black solid"
             padding={1}
@@ -304,7 +304,7 @@ export const OtherServices = (props) => {
             <Typography fontWeight="bold" fontSize={14}>
               Action
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
         {open?<CreateOtherServiceEntry style={{display:"none"}} open={open} setOpen={setOpen} IPDID={IPDNo} fetchIPDOtherServiceList={fetchIPDOtherServiceList}/>: null}
         {OtherServicesList.map((list, index) => {

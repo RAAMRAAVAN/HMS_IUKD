@@ -24,7 +24,7 @@ export const ServiceEntry = (props) => {
   const UpdateServiceDetails = async(A, D) => {
     // alert("Update", {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"});
     try{
-      let result = await axios.post('http://localhost:5000/UpdateServiceDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
+      let result = await axios.post('http://192.168.1.32:5000/UpdateServiceDetails', {AID: AID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
     } catch (err) {
       console.log(err);
     } 
@@ -159,7 +159,7 @@ export const ServiceEntry = (props) => {
           paddingX={1}
           item
           alignItems="center"
-          display="flex"
+          display="none"
           justifyContent="space-between"
         >
           <IconButton
@@ -183,7 +183,7 @@ export const ServiceEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0" }}
-            onClick={()=>{setActiveStatus("N");setDeleteStatus("Y"); UpdateServiceDetails("N", "Y");}}
+            // onClick={()=>{setActiveStatus("N");setDeleteStatus("Y"); UpdateServiceDetails("N", "Y");}}
           >
             <Delete
               size="small"
@@ -200,7 +200,7 @@ export const ServiceEntry = (props) => {
             aria-label="delete"
             size="small"
             style={{ padding: "0", margin: "0"}}
-            onClick={()=>{setActiveStatus("Y");setDeleteStatus("N"); UpdateServiceDetails("Y", "N")}}
+            // onClick={()=>{setActiveStatus("Y");setDeleteStatus("N"); UpdateServiceDetails("Y", "N")}}
           >
             <Restore
               size="small"

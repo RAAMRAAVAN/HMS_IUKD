@@ -104,9 +104,14 @@ exports.AddService = async (req, res) => {
     const query=`INSERT INTO Trn_IPDOtherServiceDetails (BranchID, HospitalID,OSID, SId, Rate, GSTPer, NetAmount, EntryType, FYearID, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUserID, ModifyDate, IsUpload, IsUploadRTS, Qty, Discount, DiscountPer, GSTAmount, GSTAccountID, GrossAmount)
 VALUES ('1', '1000001', '${OSID}', '${SID}', '${Rate}', '0', '${NetAmount}', 'N','1','Y', 'N', '1', '2024-10-08 17:27:06.197', '00-00-00-00', '0', '1900-01-01 00:00:00.000', 'Y', '2024-10-08 17:27:06.207', '${Qty}', '${Discount}', '0', '0', '0', '${Amount}')
 `;
+    const query3=`select TotalAmount, NetAmount, RecAmount from Trn_IPDOtherService where OSID='${OSID}'`
+    // const query2 =
     const request = new sql.Request();
     try{
+        const fetchOtherService = await request.query(query3);
+        console.log("fetchOtherService", fetchOtherService.recordset[0].TotalAmount);
         const InsertService = await request.query(query);
+        const UpdateOtherService = await request.query(`update Trn_IPDOtherService set TotalAmount='${fetchOtherService.recordset[0].TotalAmount + Amount}', NetAmount='${fetchOtherService.recordset[0].TotalAmount + Amount}', RecAmount='${fetchOtherService.recordset[0].TotalAmount + Amount}' where OSID='${OSID}'`)
         res.json({InsertService: InsertService})
     }catch (err){
         res.status(500).json({err: err});
