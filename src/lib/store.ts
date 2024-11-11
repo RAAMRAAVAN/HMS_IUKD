@@ -6,9 +6,10 @@ import { bedStatusSlice } from "./features/bedStatus/bedStatusSlice"; // Import 
 import { ipdPatientSlice } from "./features/IPDPatient/IpdPatientSlice";
 import { userSlice } from "./features/userLoginDetails/userSlice";
 import { textEditorSlice } from "./features/TextEditor/TextEditorSlice";
+import { ipdCaseEntrySlice } from "./features/IPDCaseEntry/IpdCaseEntrySlice";
 
 // Combine all your slices
-const rootReducer = combineSlices(otDiscountSlice, quotesApiSlice, bedStatusSlice, userSlice, ipdPatientSlice, textEditorSlice); // Add bedStatusSlice here
+const rootReducer = combineSlices(otDiscountSlice, quotesApiSlice, bedStatusSlice, userSlice, ipdPatientSlice, textEditorSlice, ipdCaseEntrySlice); // Add bedStatusSlice here
 
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;

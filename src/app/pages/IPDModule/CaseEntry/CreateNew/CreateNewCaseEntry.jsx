@@ -14,19 +14,25 @@ import {
   convertTimeFormat,
   convertTimeTo12HourFormat,
   extractTimeFromISO,
-} from "../SelectValues";
+} from "../../SelectValues";
 import { useSelector } from "react-redux";
 import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
 import { selectIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
+import { AddItems } from "./AddItems"
+import { ManageAddedItems } from "./ManageAddedItems"
+import { selectCaseEntryItems } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
+import { AddedItems } from "./AddedItems";
+// import { selectCaseEntryItems } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
 
-export const AddIPDMoneyReceipt = (props) => {
+export const CreateNewCaseEntry = (props) => {
+  const Entries = useSelector(selectCaseEntryItems)
   const { setOpen, open } = props;
   const handlePrintClick = (ReceiptID) => {
     const url = `/pages/IPDModule/MoneyReceipt?ReceiptID=${ReceiptID}`;
     window.open(url, "_blank"); // Opens in a new tab
   };
   const UserDetails = useSelector(selectUserDetails);
-  const IPDID= useSelector(selectIPDNo)
+  const IPDID = useSelector(selectIPDNo)
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState(new Date().toTimeString().slice(0, 5));
   const [MRDDetails, setMRDDetails] = useState({});
@@ -40,6 +46,8 @@ export const AddIPDMoneyReceipt = (props) => {
   const [bank, setBank] = useState("65");
   const [trnID, setTrnID] = useState("");
   const [remark, setRemark] = useState("");
+  // const [Entries, setEntries] = useState([]);
+
   // console.log(
   //   "date",
   //   date,
@@ -102,7 +110,7 @@ export const AddIPDMoneyReceipt = (props) => {
         IPDID: MRDDetails.PrintIPDNo,
         BankID: bank,
       });
-      if(response.status === 200){
+      if (response.status === 200) {
         console.log("print", response.data.ReceipdID);
         if (printStatus === true)
           handlePrintClick(response.data.ReceipdID);
@@ -128,7 +136,7 @@ export const AddIPDMoneyReceipt = (props) => {
     getMRDDetails(IPDID);
   }, []);
 
-  return MRDDetails !={}? (
+  return MRDDetails != {} ? (
     <Modal
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
@@ -141,10 +149,10 @@ export const AddIPDMoneyReceipt = (props) => {
         alignItems: "center",
       }}
     >
-      <Box sx={{ width: "80%", backgroundColor: "white" }} padding={2}>
+      <Box sx={{ width: "95%", backgroundColor: "white", height: "95%", maxHeight: "100vh", overflowY: "auto", }} padding={2}>
         <Grid container>
           <Grid item>
-            <Typography fontWeight="bold">Money Receipt</Typography>
+            <Typography fontWeight="bold">Case Entry</Typography>
           </Grid>
           <Grid
             container
@@ -155,7 +163,7 @@ export const AddIPDMoneyReceipt = (props) => {
             justifyContent="start"
             alignItems="flex-start"
           >
-            <Grid container display="flex" width="100%">
+            <Grid container display="flex" width="100%" justifyContent="space-between">
               <Grid item>
                 <Typography fontSize={12} fontWeight="bold">
                   Date:{" "}
@@ -186,9 +194,7 @@ export const AddIPDMoneyReceipt = (props) => {
                   type="time"
                 />
               </Grid>
-            </Grid>
-            <Grid item display="flex" width="100%" marginY={1}>
-              <Grid item xs={2}>
+              <Grid item xs={2} marginLeft={1}>
                 <Typography fontSize={12} fontWeight="bold">
                   Patient Name
                 </Typography>
@@ -200,7 +206,7 @@ export const AddIPDMoneyReceipt = (props) => {
                   fontSize={12}
                 />
               </Grid>
-              <Grid item xs={2} marginLeft={1}>
+              <Grid item xs={1} marginLeft={1}>
                 <Typography fontSize={12} fontWeight="bold">
                   HRNO
                 </Typography>
@@ -235,9 +241,10 @@ export const AddIPDMoneyReceipt = (props) => {
                   type="date"
                   value={AdmDate}
                   disabled
+                  fullWidth
                 />
               </Grid>
-              <Grid item xs={2} marginLeft={1}>
+              <Grid item xs={1} marginLeft={1}>
                 <Typography fontSize={12} fontWeight="bold">
                   Patient Type
                 </Typography>
@@ -249,8 +256,7 @@ export const AddIPDMoneyReceipt = (props) => {
                   fontSize={12}
                 />
               </Grid>
-
-              <Grid item xs={2} marginLeft={1}>
+              <Grid item xs={1} marginLeft={1}>
                 <Typography fontSize={12} fontWeight="bold">
                   Bed NO
                 </Typography>
@@ -264,122 +270,65 @@ export const AddIPDMoneyReceipt = (props) => {
               </Grid>
             </Grid>
             <Grid item display="flex" width="100%" marginY={1}>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Typography fontSize={12} fontWeight="bold">
-                  Amount
+                  Doctor Name
                 </Typography>
                 <TextField
-                  placeholder="Amount"
+                  // placeholder="HRNO"
                   size="small"
-                  value={amount}
-                  onChange={(e) => {
-                    setAmount(e.target.value);
-                  }}
-                  disabled
-                  fontSize={12}
-                />
-              </Grid>
-              <Grid item xs={2} marginLeft={1}>
-                <Typography fontSize={12} fontWeight="bold">
-                  Receive Amount
-                </Typography>
-                <TextField
-                  placeholder="Receive Amount"
-                  size="small"
-                  fontSize={12}
-                  value={recAmount}
-                  onChange={(e) => {
-                    setRecAmount(e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={2} marginLeft={1}>
-                <Typography fontSize={12} fontWeight="bold">
-                  MOD
-                </Typography>
-                <Select
-                  style={{ display: "flex", width: "100%" }}
-                  value={paymentMethod}
-                  label="Payment Method"
-                  onChange={(event) => {
-                    setpaymentMethod(event.target.value);
-                  }}
-                  size="small"
-                >
-                  <MenuItem value="C">Cash</MenuItem>
-                  <MenuItem value="CA">Card</MenuItem>
-                  <MenuItem value="CH">UPI</MenuItem>
-                  <MenuItem value="NB">Net Banking</MenuItem>
-                  <MenuItem value="B">BTC</MenuItem>
-                  <MenuItem value="CR">Credit</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={2} marginLeft={1}>
-                <Typography fontSize={12} fontWeight="bold">
-                  Bank Name
-                </Typography>
-                <Select
-                  style={{ display: "flex", width: "100%" }}
-                  value={bank}
-                  label="Payment Method"
-                  onChange={(event) => {
-                    setBank(event.target.value);
-                  }}
-                  size="small"
-                  disabled={!enableBank}
-                >
-                  <MenuItem value="65">ICICI Bank</MenuItem>
-                  <MenuItem value="63">HDFC Bank</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={2} marginLeft={1}>
-                <Typography fontSize={12} fontWeight="bold">
-                  Trans No
-                </Typography>
-                <TextField
-                  placeholder="0000"
-                  size="small"
-                  value={trnID}
-                  onChange={(e) => {
-                    setTrnID(e.target.value);
-                  }}
-                  disabled={!enableBank}
+                  // value={MRDDetails.CompanyID == "110" ? "Ayushman" : "General"}
+                  // disabled
                   fontSize={12}
                 />
               </Grid>
             </Grid>
-            <Grid container display="flex" width="100%">
-              <Typography fontSize={12} fontWeight="bold">
-                Remark:{" "}
-              </Typography>
-              <TextField
-                fullWidth
-                fontSize={12}
-                value={remark}
-                onChange={(e) => {
-                  setRemark(e.target.value);
-                }}
-                size="small"
-              />
+            <Grid container>
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">SLNO</Typography>
+              </Grid>
+
+              <Grid item xs={3} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">Service Name</Typography>
+              </Grid>
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">Rate</Typography>
+              </Grid>
+
+
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">Tax %</Typography>
+              </Grid>
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">Amount</Typography>
+              </Grid>
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">Discount</Typography>
+              </Grid>
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">NetAmount</Typography>
+              </Grid>
+
+              <Grid item xs={1} border="1px black solid" padding={1}>
+                <Typography fontSize={14} fontWeight="bold">Action</Typography>
+              </Grid>
             </Grid>
-            <Grid container marginTop={5}>
-              <Button variant="contained" onClick={() => {
-                  SaveMoneyReceipt(false); handleClose();
-                }} disabled={recAmount === 0?true: false}> Save</Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  SaveMoneyReceipt(true); handleClose();
-                }}
-                style={{ marginLeft: "10px" }}
-                disabled={recAmount === 0?true: false}
-              >
-                Save & Print
-              </Button>
-            </Grid>
+            {/* Items */}
+
+            {Entries.map((Entry, index) => {
+              return (<AddedItems key={Entry.SLNO} Entry={Entry} index={index} />)
+            })}
+            <AddItems slno={Entries.length} />
+            <ManageAddedItems/>
           </Grid>
         </Grid>
       </Box>
     </Modal>
-  ):<></>;
+  ) : <></>;
 };

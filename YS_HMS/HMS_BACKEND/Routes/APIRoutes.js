@@ -14,6 +14,7 @@ const {fetchUserDetails} = require('../controllers/userController')
 const { fetchIPDMoneyReceipts, fetchIPDBillDetails, fetchIPDBillDet, fetchIPDMoneyReceiptDetails, deleteIPDMoneyReceipt, addMoneyReceipt, getMoneyReceiptDetails, updateMoneyReceipt } = require('../controllers/ipdMoneyReceiptController');
 const { fetchIPDDoctorVisitList, getVisitListDetails, UpdateVisitDetails, deleteDoctorVisitEntries, getDoctorList, AddDoctorVisit, CreateDoctorVisit, getDoctorVisitPermissions } = require('../controllers/ipdDoctorVisit');
 const { fetchOtherServicesList, getServiceListDetails, UpdateServiceDetails, getServiceList, AddService, deleteOtherServiceEntries, CreateOtherService } = require('../controllers/ipdOtherServices');
+const { filterServiceMaster } = require('../controllers/CaseEntryController');
 
 // User Details
 router.post('/fetchUserDetails', fetchUserDetails)
@@ -87,4 +88,5 @@ router.post('/CreateOtherService', CreateOtherService)
 
 //CASE ENTRY
 router.post('/fetchIPDCaseEntry', phatologyController.fetchIPDCaseEntry)
+router.post('/filterServiceMaster', filterServiceMaster)
 module.exports = router;

@@ -27,11 +27,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
 import { useEffect, useState } from "react";
 import { setMOP } from "../SelectValues";
+import {CreateNewCaseEntry} from "./CreateNew/CreateNewCaseEntry"
 
 export const LabCaseEntry = (props) => {
   const dispatch = useDispatch();
   const IPDNo = useSelector(selectIPDNo)
   const [CaseEntryList, setCaseEntryList] = useState([]);
+  const [open, setOpen] = useState(false);
   console.log("CaseEntryList", CaseEntryList)
   const fetchIPDCaseEntry = async () => {
     try {
@@ -46,9 +48,10 @@ export const LabCaseEntry = (props) => {
   }, [])
   return (
     <>
+      <CreateNewCaseEntry open={open} setOpen={setOpen}/>
       <Box display="flex" justifyContent="space-between" width="97vw" paddingY={1}>
         <Typography fontWeight="bold">Case Entry</Typography>
-        <Button variant="contained" size="small">Add</Button>
+        <Button variant="contained" size="small" onClick={()=>{setOpen(!open)}}>Add</Button>
       </Box>
       <Box display="flex" width="97vw" flexDirection="column">
         <Grid container display="flex" width="100%">
