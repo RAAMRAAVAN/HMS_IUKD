@@ -14,7 +14,7 @@ export const AdmissionForm = () => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDPatientDetails",
+        "http://192.168.1.32:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log(response.data[0]);
@@ -61,13 +61,13 @@ export const AdmissionForm = () => {
           <Typography fontSize={12}>
             Email: iukd.india@gmail.com, Web: www.iukdindia.com
           </Typography>
-          <Typography fontWeight="bold" marginTop={3}>Admission Form</Typography>
+          <Typography fontWeight="bold" marginTop={3} variant="h5">Admission Form</Typography>
         </Grid>
         <Grid xs={2} item display="flex" justifyContent="end">
 
         </Grid>
       </Grid>
-      <Grid container padding={0} marginTop={1} >
+      <Grid container padding={0} marginTop={5} >
         {/* Patient Details */}
         <Grid container justifyContent="space-between" border="1px black solid">
           <Grid xs={6} container flexDirection="row">
@@ -440,10 +440,16 @@ export const AdmissionForm = () => {
             <Typography fontSize={12}> </Typography>
           </Grid>
         </Grid>
+        <Grid display="flex" width="100vw" justifyContent="end" position="absolute" top="900px" >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography fontSize={14} fontWeight="bold">(Signature)</Typography>
+            <Typography fontSize={14}><b>By:</b> {MRDDetails.FirstName}</Typography>
+          </Box>
+        </Grid>
+
         <Grid display="flex" width="100vw" justifyContent="end" position="absolute" top="1000px" >
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Typography fontSize={12} fontWeight="bold">(Signature)</Typography>
-            <Typography fontSize={12}><b>By:</b> {MRDDetails.FirstName}</Typography>
+            <Typography>Form No: iUKD/MRD/002</Typography>
           </Box>
         </Grid>
       </Grid>

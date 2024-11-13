@@ -26,7 +26,7 @@ export const PrintIPDMoneyReceipt = () => {
     console.log("IPD", input);
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDMoneyReceiptDetails",
+        "http://192.168.1.32:5000/fetchIPDMoneyReceiptDetails",
         {
           ReceiptID: input,
         }
