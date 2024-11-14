@@ -136,9 +136,7 @@ where DM.ActiveStatus='Y'`
 exports.postIPDAdmission = async(req, res) => {
   const {HospitalID, BranchID, HRNo, Date, Time, OPDStatus, Patient, OPDNo, TitleID, PatientName, OccupationID, Gender, MaritialStatus, Age, Year, Month, Days, DOB, Address, Pincode, RelegionID, CityID, DistrictID, In_Insurance, InsuranceID, InsRefDate,RelationName, RelationID, PhoneNo, CompanyID, AdmitType, BedID, WardID, MedicalDr, UnderDr, UnderDr_2, RefDrID, ShiftID, PackageID, ImagePath, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUser, ModifyDate, IsUpload, IsUploadRTS, FYearID, Discharge, IsFinalBill, DischargeDateTime, PackageRate, RegStatus, InsurCompID, PO, PS} = req.body;
   let newIPAID = null;
-  // console.log("Admission",HospitalID, BranchID, HRNo, Date, Time, OPDStatus, Patient, OPDNo, TitleID, PatientName, OccupationID, Gender, MaritialStatus, Age, Year, Month, Days, DOB, Address, Pincode, RelegionID, CityID, DistrictID, In_Insurance, InsuranceID, InsRefDate,RelationName, RelationID, PhoneNo, CompanyID, AdmitType, BedID, WardID, MedicalDr, UnderDr, UnderDr_2, RefDrID, ShiftID, PackageID, ImagePath, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUser, ModifyDate, IsUpload, IsUploadRTS, FYearID, Discharge, IsFinalBill, DischargeDateTime, PackageRate, RegStatus, InsurCompID, PO, PS)
-  // console.log("teest",HospitalID, BranchID, HRNo, Date, Time, OPDStatus, Patient, OPDNo, TitleID, PatientName, OccupationID, Gender, MaritialStatus, Age, Year, Month, Days, DOB, Address, Pincode, RelegionID, CityID, DistrictID, In_Insurance, InsuranceID, InsRefDate, RelatioID, PhoneNo, CompanyID, AdmitTYpe, BedID, WardID, MedicalDr, UnderDr, UnderDr_2, RefDrID, ShiftID, PackageID, ImagePath, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUser, ModifyDate, IsUpload, IsUploadRTS, FYearID, Discharge, IsFinalBill, DischargeDateTime, PackageRate, RegStatus, InsurCompID, PO, PS)
-  // console.log(MaritialStatus)
+  const getBedRent = `select * from M_BedMaster where BedID='${BedID}'`
   const request = new sql.Request();
   const LastAdmissionDetails = `select TOP 1 * from M_IPDAdmission ORDER BY IPAID DESC `;
   
@@ -148,6 +146,20 @@ exports.postIPDAdmission = async(req, res) => {
   const InsertNewAdmission = await request.query(`INSERT INTO M_IPDAdmission (IPAID, HospitalID, BranchID, HRNo, IPDNo,Date, Time, OPDStatus, Patient, OPDNo, TitelID, PatientName, OccupationID, Gender, MaritalStatus, Age, Year, Month, Days, DOB, Address, Pincode, ReligionID, CityID, DistictID, In_Insurance, InsuranceID, InsRefDate, RelationName, RelationID, PhoneNo, CompanyID, ADMType, BedID, WardID, MedicalDr, UnderDr, UnderDr_2, RefDrID, ShiftID, PackageID, ImagePath, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUserID, ModifyDate, IsUpload, IsUploadRTS, FYearID, Discharge, IsFinalBill, DischargeDateTime, PackageRate,PrintIPDNo, RegStatus, InsurCompID, PO, PS)
     VALUES (${LastAdmissionDetail.recordset[0].IPAID + 1},${HospitalID}, ${BranchID}, '${HRNo}', 'IPD/23-24/${LastAdmissionDetail.recordset[0].IPAID + 1}','${Date} 00:00:00.000', '1900-01-01 ${Time}.000', '${OPDStatus}', '${Patient}', '${OPDNo}', ${TitleID}, '${PatientName}','${OccupationID}', '${Gender}', '${MaritialStatus}', '${Age}', '${Year}', '${Month}', '${Days}', '2014-04-01 00:00:00.000', '${Address}', '${Pincode}', '${RelegionID}', '${CityID}', '${DistrictID}', 'N', '0', '${Date} 00:00:00.000','${RelationName}', '${RelationID}', '${PhoneNo}', '${CompanyID}', '${AdmitType}', '${BedID}', '${WardID}', '${UnderDr}', '${UnderDr}', '${UnderDr}', '${UnderDr}', '0', '0', '../ItemImages/No-image-found.jpg', 'Y', 'N', '1', '${Date} ${Time}.400', '00-15-5D-F1-68-98', '0', NULL, 'Y', '${Date} ${Time}.010', '1', 'N', 'N', NULL, '0', '${LastAdmissionDetail.recordset[0].IPAID + 1}','B', '0', '${PO}', '${PS}')`
   );
+  const FetchBedRent = await request.query(getBedRent);
+  const saveBedRentQuery = `INSERT INTO M_IPDAdmissionBedDetails (BranchID, HospitalID, IPAID, IPDGroup, Pax, BedID, BedNo, BedRate, GSTAccountID, GST, GSTAmount, ServiceTaxAccountID, ServiceTaxPre, ServiceTaxAmount, Disc, DiscAmount, Amount, BedCheckIn, BedCheckOut, BedTrnsChkIn, BedTrnsChkOut, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUserID, ModifyDate, IsUpload, IsUploadRTS, FYearID, RegStatus,IsLastBed, IsCharge, NoOfDays)
+VALUES('1', '1000001', '${LastAdmissionDetail.recordset[0].IPAID + 1}', '${LastAdmissionDetail.recordset[0].IPAID + 2}', '1', '${BedID}', '${FetchBedRent.recordset[0].BedNo}', ${FetchBedRent.recordset[0].BedRent}, '11', 0.00, 0.00, '11', 0.00, 0.00, 0.00, 0.00,  ${FetchBedRent.recordset[0].BedRent}, '${Date} ${Time}.000', NULL, '${Date} ${Time}.000', NULL, 'Y', 'N', '1', '${Date} ${Time}.000', '08-BF-B8-74-07-C1', '0', NULL, 'Y', '${Date} ${Time}.000', '1', 'B', 'Y', 'Y', '1')`
+  const saveBedRent = await request.query(saveBedRentQuery);
+  const getBedServices=`select * from M_BedServiceChargeMaster where BedID='${BedID}'`;
+  const FetchBedServices = await request.query(getBedServices);
+  console.log(FetchBedRent.recordset[0].BedRent)
+  // console.log(FetchBedServices.recordset)
+  FetchBedServices.recordset.map(async(service, index)=>{
+    // console.log(index, service.Rate);
+    let serviceQuery = `INSERT INTO M_IPDAdmissionServiceDetails (BranchID, HospitalID, IPAID, BedID, SID, ServiceRate, LuxuryTaxID, LuxuryTaxPre, LuxuryTaxAmount, SaleTaxID, SaleTaxPre, SaleTaxAmount, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUserID, ModifyDate, IsUpload, IsUploadRTS, FYearID, OneTimeChg, RecordID)
+VALUES ('1', '1000001', ${LastAdmissionDetail.recordset[0].IPAID + 1}, '${BedID}', '${service.SID}', ${service.Rate}, '11', 0.00, 0.00, 11, 0.00, 0.00, 'Y', 'N', '1', '${Date} ${Time}.000', '08-BF-B8-74-07-C1', '0', NULL, 'Y', '${Date} ${Time}.000', '1', 'N', '0')`;
+    const saveService = await request.query(serviceQuery);
+  });
   const newIPAID = LastAdmissionDetail.recordset[0].IPAID + 1;
   const BedAssign = await request.query(`update M_BedMaster set BedStatus='B', IPDHRNo='${HRNo}' where BedID='${BedID}'`)
 
