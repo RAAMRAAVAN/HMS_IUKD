@@ -15,6 +15,7 @@ import { selectIPDNo, selectselectedPatient } from "@/src/lib/features/IPDPatien
 import axios from "axios";
 import {getPermissions} from "../../Const/Permissions"
 import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
+import {IPDAdmit} from "./IPDAdmit/IPDAdmit"
 
 
 export const IPDNav = () => {
@@ -125,5 +126,5 @@ export const IPDNav = () => {
                 </TabContext>
             </Box>
         </Box>
-    </>) : <></>;
+    </>) : <><IPDAdmit/></>;
 }

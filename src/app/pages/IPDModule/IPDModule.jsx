@@ -20,7 +20,7 @@ const dispatch=useDispatch();
   const getFilteredPatients = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/filterIPDPatientAuto",
+        "http://localhost:5000/filterIPDPatientAuto",
         {
           like_name: input,
         }

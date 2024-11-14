@@ -11,19 +11,18 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchbedStatus, setIPDNO } from "../../redux";
-import { genderList, maritialStatusList, relationList, relegionList, titleList } from "../../Const/Const";
+import { genderList, maritialStatusList, relationList, relegionList, titleList } from "../../../Const/Const";
 import { setRelationValue, setRelegionValue, setTitleValue } from "./SelectListValues";
-import { useNavigate } from "react-router-dom";
+import { getBedStatusAsync, selectBedDetails, selectWardDetails } from "@/src/lib/features/bedStatus/bedStatusSlice";
+import { assignIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
 
 
-export const IPDAdmissionList = () => {
+export const IPDAdmit = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const bedDetails = useSelector((state) => state.bedStatus.bedDetails);
+  const bedDetails = useSelector(selectBedDetails);
   console.log("bedDetails=", bedDetails);
 
-  const wardDetails = useSelector((state) => state.bedStatus.wardDetails);
+  const wardDetails = useSelector(selectWardDetails);
   console.log("Ward=", wardDetails);
   const [ipdNo, setIpdNo] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
@@ -66,8 +65,8 @@ export const IPDAdmissionList = () => {
   const [insuranceId, setInsuranceId] = useState("");
   const [financeCompany, setFinanceCompany] = useState({
     AID: 18070,
-    Code: "110",
-    LedgerName: "AYUSHMAN",
+    Code: "0",
+    LedgerName: "None",
   });
   const [admitType, setAdmitType] = useState({});
   const [relation, setRelation] = useState({ AID: 35, label: "None." });
@@ -128,7 +127,7 @@ export const IPDAdmissionList = () => {
     // if (!phoneNo) tempErrors.phoneNo = true;
     // if (!wardName) tempErrors.wardName = true;
     // if (!bedNo) tempErrors.bedNo = true;
-    // if (!medicalDr) tempErrors.medicalDr = true;
+    // if (!medicalDr) tempErssirors.medicalDr = true;
     // if (!underDr) tempErrors.underDr = true;
 
     setErrors(tempErrors);
@@ -212,7 +211,7 @@ export const IPDAdmissionList = () => {
       setInsuranceCompanyList(response.data.insuranceCompany);
       setDoctorList(response.data.doctorName);
       setMedicalDr(response.data.doctorName[18]);
-      setUnderDr(response.data.doctorName[18]);
+      setUnderDr(response.data.doctorName[0]);
       setAdmitType(response.data.admitType[8]);
       setDistrictList(response.data.District);
 
@@ -243,7 +242,7 @@ export const IPDAdmissionList = () => {
       console.log("POST Result",response);
       if(response.data.InsertStatus.rowsAffected[0] === 1)
         {alert("Patient Admitted Successfully")
-          dispatch(setIPDNO(response.data.newIPAID));
+          dispatch(assignIPDNo(response.data.newIPAID));
           navigate(`/IPDModule`)
         }
       else
@@ -257,7 +256,7 @@ export const IPDAdmissionList = () => {
     getAdmissionResources();
     if (bedDetails.length === 0) {
       console.log("fetch");
-      dispatch(fetchbedStatus());
+      dispatch(getBedStatusAsync());
     }
   }, []);
 

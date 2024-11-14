@@ -27,6 +27,7 @@ export const IPDAdmission = (props) => {
   const wardDetails = useSelector(selectWardDetails);
   console.log("Ward=", wardDetails);
   const [loading, setLoading] = useState("loading");
+  // const [DoctorList, setDoctorList] = useState([]);
   const [fetchedPatient, setFetchedPatient] = useState({});
   const IPDNo = useSelector(selectIPDNo)
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
@@ -81,6 +82,7 @@ export const IPDAdmission = (props) => {
   console.log("ward=", wardName, "bedno=", bedNo)
   const [medicalDr, setMedicalDr] = useState({});
   const [underDr, setUnderDr] = useState({});
+  console.log("Under dr=", underDr);
   const [occupation, setOccupation] = useState({});
   const [occupation_list, setOccupationList] = useState([]);
   console.log("Occupation=", occupation)
@@ -138,6 +140,7 @@ export const IPDAdmission = (props) => {
     // if (tempErrors == {}) {
     //   console.log("All fields are filled. Submitting data...");
     // Perform submit action
+   
     updateIPDAdmission({
       HRNo: hrno,
       IPDNo: `IPD/23-24/${IPDNo}`,
@@ -173,7 +176,7 @@ export const IPDAdmission = (props) => {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/admission_resources"
+        "http://localhost:5000/admission_resources"
       );
       console.log(response);
       setOccupationList(response.data.occupations);
@@ -182,7 +185,7 @@ export const IPDAdmission = (props) => {
       // setInsuranceCompanyList(response.data.insuranceCompany);
       setDoctorList(response.data.doctorName);
       setMedicalDr(response.data.doctorName[18]);
-      setUnderDr(response.data.doctorName[18]);
+      // setUnderDr(response.data.doctorName[18]);
       setAdmitType(response.data.admitType[8]);
       setDistrictList(response.data.District);
 
@@ -194,7 +197,7 @@ export const IPDAdmission = (props) => {
   const getFilteredPatients = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/filtered_patient",
+        "http://localhost:5000/filtered_patient",
         {
           like_name: input,
         }
@@ -208,7 +211,7 @@ export const IPDAdmission = (props) => {
   const updateIPDAdmission = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/update-ipd-details", input
+        "http://localhost:5000/update-ipd-details", input
       );
       console.log("POST Result", response);
       if (response.data.UpdateStatus.rowsAffected[0] >= 1)
@@ -222,7 +225,7 @@ export const IPDAdmission = (props) => {
   const getIPDAdmissionDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.32:5000/fetchIPDPatientDetails",
+        "http://localhost:5000/fetchIPDPatientDetails",
         {
           IPDNo: input,
         }
@@ -268,6 +271,7 @@ export const IPDAdmission = (props) => {
       setWardName({ WardId: response.data[0].WardID, WardName: response.data[0].WardName })
       setBedNo(response.data[0].BedNo)
       getAdmissionResources();
+      setUnderDr({AID: response.data[0].AID, DrId: response.data[0].UnderDr, DoctorName: response.data[0].DoctorName})
       setLoading("Found_User");
     } catch (error) {
       console.log(error);

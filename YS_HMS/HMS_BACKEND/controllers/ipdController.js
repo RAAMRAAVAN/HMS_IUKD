@@ -152,7 +152,7 @@ exports.postIPDAdmission = async(req, res) => {
   const BedAssign = await request.query(`update M_BedMaster set BedStatus='B', IPDHRNo='${HRNo}' where BedID='${BedID}'`)
 
   const combinedResult = {
-    newIPAID: `IPD/23-24/${LastAdmissionDetail.recordset[0].IPAID + 1}`,
+    newIPAID: `${LastAdmissionDetail.recordset[0].IPAID + 1}`,
     inputs: req.body,
     lastRecord: LastAdmissionDetail.recordset,
     InsertStatus: InsertNewAdmission
@@ -179,7 +179,9 @@ exports.updateIPDAdmission = async(req, res) => {
   ReligionID='${RelegionID}',
   CompanyID='${CompanyID}',
   MaritalStatus='${MaritialStatus}',
-  PhoneNo='${PhoneNo}'
+  PhoneNo='${PhoneNo}',
+  MedicalDr='${UnderDr}',
+  UnderDr='${UnderDr}'
   where HRNo='${HRNo}'`
 
   const query1 = `update M_IPDAdmission set CompanyID='${CompanyID}',
@@ -208,7 +210,7 @@ exports.fetchIPDPatient = async (req, res) => {
   const {IPDNo} = req.body;
   const request = new sql.Request();
   const query = `select * from M_IPDAdmission where IPDNo='${IPDNo}'`
-  const query2 = `select BM.BedNo, UM.FirstName,WM.WardName,OM.OID AS OccupationOID, 
+  const query2 = `select BM.BedNo, UM.FirstName,WM.WardName,OM.OID AS OccupationOID, DoM.DoctorName,
             OM.OccupationName, DM.CountryID,DID,DM.DistrictName,SM.StateId, SM.StateName,PM.* from M_IPDAdmission as PM join
 		M_DistrictMaster AS DM
 		ON PM.DistictID = DM.DID
@@ -218,6 +220,9 @@ exports.fetchIPDPatient = async (req, res) => {
 		join 
 		M_OccupationMaster AS OM
 		ON PM.OccupationID = OM.OID
+    join
+    M_DoctorMaster AS DoM
+    ON DoM.DrId=PM.UnderDr
     join
 		M_WardMaster as WM
 		ON PM.WardID = WM.WardID
