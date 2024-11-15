@@ -18,7 +18,7 @@ export const PrintOTDischarge = () => {
   const getOTDischargeDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchOtDischargeDetails",
+        "http://192.168.1.108:5000/fetchOtDischargeDetails",
         {
           PId: input,
         }

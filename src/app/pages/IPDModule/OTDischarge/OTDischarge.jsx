@@ -21,7 +21,7 @@ export const OTDischarge = () => {
   const fetchOtDischarge = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchOtDischarge",
+        "http://192.168.1.108:5000/fetchOtDischarge",
         {
           IPAID: input,
         }

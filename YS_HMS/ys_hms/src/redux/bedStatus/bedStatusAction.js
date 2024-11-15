@@ -24,7 +24,7 @@ const fetchbedStatusFailure=error=>{
 export const fetchbedStatus=(fromDate, toDate)=>{
     return (dispatch)=>{
         dispatch(fetchbedStatusRequest);
-        axios.post('http://localhost:5000/getWardCollection')
+        axios.post('http://192.168.1.108:5000/getWardCollection')
         .then(response=>{
             const bedStatus=response.data
             dispatch(fetchbedStatusSuccess(bedStatus))

@@ -1,6 +1,23 @@
 const { request } = require('express');
 const sql = require('mssql/msnodesqlv8');
 
+const replaceDigits2 = (b) => {
+  let a='OT00000000';
+  // Convert 'a' to an array of characters
+  let aArr = a.split(''); // '10000000' as an array
+
+  // Convert 'b' to a string and reverse it to start replacing from the ones place -- 1355 -- 5531
+  let bStr = b.toString().split('').reverse();
+
+  // Iterate over each digit of 'b' and replace the corresponding value in 'aArr'
+  for (let i = 0; i < bStr.length; i++) {
+    aArr[aArr.length - 1 - i] = bStr[i]; // Replace from rightmost position
+  }
+
+  // Join the modified array back into a string
+  return aArr.join('');
+}
+
 exports.getIPDCollection = (req, res) => {
   const fromDate=req.body.fromDate;
   const toDate=req.body.toDate;
@@ -139,7 +156,7 @@ exports.postIPDAdmission = async(req, res) => {
   const getBedRent = `select * from M_BedMaster where BedID='${BedID}'`
   const request = new sql.Request();
   const LastAdmissionDetails = `select TOP 1 * from M_IPDAdmission ORDER BY IPAID DESC `;
-  
+  const LastOTBillDetailsQuery = `select TOP 1 * from Trn_OTBilling ORDER BY OTID DESC`;
   try {
   // Execute first query
   const LastAdmissionDetail = await request.query(LastAdmissionDetails);
@@ -162,6 +179,11 @@ VALUES ('1', '1000001', ${LastAdmissionDetail.recordset[0].IPAID + 1}, '${BedID}
   });
   const newIPAID = LastAdmissionDetail.recordset[0].IPAID + 1;
   const BedAssign = await request.query(`update M_BedMaster set BedStatus='B', IPDHRNo='${HRNo}' where BedID='${BedID}'`)
+  const LastOTBillDetails = await request.query(LastOTBillDetailsQuery);
+  const createOTBillQuery = `INSERT INTO Trn_OTBilling (FYearID, BranchID, HospitalID, OTID, OTNo, Date, Time, Advance, OTBookingNo, PatientType, OTDate, OTTime, PatientName, IPD_OPD, HRNO, PackageID, SurgeonDoctorID, SurDrCharge, SurDrDiscountPer, SurDrAmount, OTIDs, CompanyID, OTSlotID, OTTypeID, OTRoomID, OTCharges, AnethesiaCharge, SurgeonCharge, O_SurgeonCharge, OTCharge, OTService, AdvanceAmount, GrandTotal, DiscountPer, DiscountRs, NetAmount, ReceiptAmount, BalanceAmount, MOD, BankID, ChequeDate, CheckInUser,  OTCancel, OTCancelDate, OTCancelUserID, EntryType, ActiveStatus, DeleteStatus, UserID, RTS, IPAddress, ModifyUserID, ModifyDate, IsUpload,IsUploadRTS, IPDID, Discharge, DischargeDateTime, Remark)
+VALUES(1,1,1000001, '${LastOTBillDetails.recordset[0].OTID + 1}', '${replaceDigits2(LastOTBillDetails.recordset[0].OTID + 1)}', '${Date} 00:00:00.000', '1900-01-01 ${Time}.000', 'N', 0, 'I', '${Date} 00:00:00.000', '1900-01-01 ${Time}.000', '${PatientName}', 'IPD/23-24/${LastAdmissionDetail.recordset[0].IPAID + 1}', '${HRNo}', 0, 1, 0.00, 0.00, 0.00, 0, 0, 0, 0, 0, 0.00, 0.00, 0.00,0.00, 0.00, 0.00, 0.00, 0.00,0.00, 0.00,0.00,0.00,0.00,'CR', 0, '1900-01-01 00:00:00.000', '1', 'N', '1900-01-01 00:00:00.000', 0, 'N', 'Y', 'N', 1, '${Date} ${Time}.613', '08-BF-B8-74-07-C1', 0, NULL, 'Y', '${Date} ${Time}.617', '${LastAdmissionDetail.recordset[0].IPAID + 1}', 'Y', '${Date} ${Time}.160', '')
+`
+  const createOTBill = await request.query(createOTBillQuery);
 
   const combinedResult = {
     newIPAID: `${LastAdmissionDetail.recordset[0].IPAID + 1}`,
