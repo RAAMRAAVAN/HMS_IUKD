@@ -382,16 +382,12 @@ export const MRDForm = () => {
           <br/>
           <br/>
           <br/>
-          <Box display="flex" width="100%" justifyContent="space-between">
-            <Box>
-              <Typography fontSize="12px">Signature/Patient/Gauradian</Typography>
-            </Box>
-            <Box>
-              <Typography fontSize="12px">
-                For Institute of Urology and Kidney Diseases
-              </Typography>
-            </Box>
+          <Grid display="flex" width="100vw" justifyContent="end" position="absolute" top="980px" >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography fontSize={14} fontWeight="bold">(Signature)</Typography>
+            <Typography fontSize={14}><b>By:</b> {MRDDetails.FirstName}</Typography>
           </Box>
+        </Grid>
         </Box>
       </Grid>
     </>

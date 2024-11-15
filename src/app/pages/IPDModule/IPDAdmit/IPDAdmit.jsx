@@ -15,13 +15,14 @@ import { genderList, maritialStatusList, relationList, relegionList, titleList }
 import { setRelationValue, setRelegionValue, setTitleValue } from "./SelectListValues";
 import { getBedStatusAsync, selectBedDetails, selectWardDetails } from "@/src/lib/features/bedStatus/bedStatusSlice";
 import { assignIPDNo } from "@/src/lib/features/IPDPatient/IpdPatientSlice";
+import { selectUserDetails } from "@/src/lib/features/userLoginDetails/userSlice";
 
 
 export const IPDAdmit = () => {
   const dispatch = useDispatch();
   const bedDetails = useSelector(selectBedDetails);
   console.log("bedDetails=", bedDetails);
-
+  const UserDetails = useSelector(selectUserDetails);
   const wardDetails = useSelector(selectWardDetails);
   console.log("Ward=", wardDetails);
   const [ipdNo, setIpdNo] = useState("");
@@ -179,7 +180,7 @@ export const IPDAdmit = () => {
         ImagePath:'../ItemImages/No-image-found.jpg',
         ActiveStatus: "Y",
         DeleteStatus: "N",
-        UserID: '1',
+        UserID: UserDetails.UId,
         RTS: date+time,
         IPAddress: '00-15-5D-F1-68-98',
         ModifyUser:'0',
