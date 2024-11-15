@@ -55,7 +55,7 @@ export const MoneyReceipt = (props) => {
   const fetchIPDMoneyReceipts = async (input) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.108:5000/fetchIPDMoneyReceipts",
+        "http://192.168.1.32:5000/fetchIPDMoneyReceipts",
         {
           IPDID: input,
         }
@@ -69,7 +69,7 @@ export const MoneyReceipt = (props) => {
   const deleteIPDMoneyReceipt = async (ReceiptID) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.108:5000/deleteIPDMoneyReceipt",
+        "http://192.168.1.32:5000/deleteIPDMoneyReceipt",
         { ReceiptID: ReceiptID }
       );
       if (response.data.Status === true) {

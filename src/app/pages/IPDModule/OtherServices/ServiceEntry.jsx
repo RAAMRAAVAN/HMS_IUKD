@@ -24,7 +24,7 @@ export const ServiceEntry = (props) => {
   const UpdateServiceDetails = async(A, D) => {
     // alert("Update", {AID: AID,ActiveStatus: ActiveStatus, DeleteStatus: DeleteStatus, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"});
     try{
-      let result = await axios.post('http://192.168.1.108:5000/UpdateServiceDetails', {AID: AID, OSID: props.OSID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
+      let result = await axios.post('http://192.168.1.32:5000/UpdateServiceDetails', {AID: AID, OSID: props.OSID,ActiveStatus: A, DeleteStatus: D, Qty: Qty, Discount: Discount, Amount: Amount, Rate: Rate, NetAmount: NetAmount,User: "1"})
     } catch (err) {
       console.log(err);
     } 
