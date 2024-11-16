@@ -24,7 +24,7 @@ const fetchipdPatinetFailure=error=>{
 export const fetchipdPatinet=(fromDate, toDate)=>{
     return (dispatch)=>{
         dispatch(fetchipdPatinetRequest);
-        axios.post('http://192.168.1.32:5000/filterIPDPatient')
+        axios.post('http://localhost:5000/filterIPDPatient')
         .then(response=>{
             const ipdPatinet=response.data
             dispatch(fetchipdPatinetSuccess(ipdPatinet))

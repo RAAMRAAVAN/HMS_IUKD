@@ -37,7 +37,7 @@ export const LabCaseEntry = (props) => {
   console.log("CaseEntryList", CaseEntryList)
   const fetchIPDCaseEntry = async () => {
     try {
-      const result = await axios.post("http://192.168.1.32:5000/fetchIPDCaseEntry", { IPAID: IPDNo });
+      const result = await axios.post("http://localhost:5000/fetchIPDCaseEntry", { IPAID: IPDNo });
       setCaseEntryList(result.data.IPDCaseEntry);
     } catch (err) {
       alert(err);

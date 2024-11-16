@@ -3,24 +3,29 @@ import { selectCaseEntryItems } from "@/src/lib/features/IPDCaseEntry/IpdCaseEnt
 import { AddedItems } from "./AddedItems"
 import { Button, Grid, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-export const ManageAddedItems = () => {
+import axios from "axios";
+export const ManageAddedItems = (props) => {
+
+  const {IPDID, date, time, UserID, UserName} = props;
   const Entries = useSelector(selectCaseEntryItems);
   const [TotalRate, setTotalRate] = useState(0);
   const [TotalGST, setTotalGST] = useState(0);
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalDiscount, setTotalDiscount] = useState(0);
+  const [recAmount, setRecAmount] = useState(0);
   const [enableBank, setEnableBank] = useState(false);
-  const [paymentMethod, setpaymentMethod] = useState("C");
+  const [paymentMethod, setpaymentMethod] = useState("CR");
   const [bank, setBank] = useState("65");
   const [trnID, setTrnID] = useState("");
   const [remark, setRemark] = useState("");
   console.log("Manage Entries=", Entries);
 
   const CalculateCharges = () => {
-    setTotalRate(Entries.reduce((acc, Entry)=>{return(acc+ Entry.Rate)}, 0));
+    setTotalRate(Entries.reduce((acc, Entry)=>{return(acc+ Number(Entry.Rate))}, 0));
     setTotalGST(0);
-    setTotalAmount(Entries.reduce((acc, Entry)=>{return(acc+ Entry.Amount)}, 0));
-    setTotalDiscount(Entries.reduce((acc, Entry)=>{return(acc+ Entry.Discount)}, 0))
+    setTotalAmount(Entries.reduce((acc, Entry)=>{return(acc+ Number(Entry.Amount))}, 0));
+    setTotalDiscount(Entries.reduce((acc, Entry)=>{return(acc+ Number(Entry.Discount))}, 0))
+    setRecAmount(Entries.reduce((acc, Entry)=>{return(acc+ (Number(Entry.Amount) - Number(Entry.Discount)))}, 0))
   }
   useEffect(() => {
     const UpdateBankMenu = () => {
@@ -36,7 +41,17 @@ export const ManageAddedItems = () => {
   }, [paymentMethod]);
   useEffect(()=>{
     CalculateCharges();
+    
   },[Entries])
+
+  const CreateCaseEntry = async() => {
+    try{
+      let result = await axios.post("http://localhost:5000/createCaseEntry", {IPDID: IPDID, Rate: TotalRate, Discount: TotalDiscount, Amount: TotalAmount, NetAmount: TotalAmount - TotalDiscount, RecAmount: (paymentMethod === "CR")? 0: recAmount, date: date, time: time, UserID: UserID, UserName: UserName, Entries: Entries});
+      console.log("result=", result);
+    }catch(err){
+      alert(err);
+    }
+  }
   return (<><Grid item display="flex" width="100%" marginY={1}>
     <Grid item xs={2}>
       <Typography fontSize={12} fontWeight="bold">
@@ -109,7 +124,7 @@ export const ManageAddedItems = () => {
       <TextField
         placeholder="Amount"
         size="small"
-        value={TotalAmount - TotalDiscount}
+        value={Number(TotalAmount) - Number(TotalDiscount)}
         onChange={(e) => {
           // setAmount(e.target.value);
         }}
@@ -127,10 +142,11 @@ export const ManageAddedItems = () => {
         placeholder="Receive Amount"
         size="small"
         fontSize={12}
-        // value={recAmount}
+        value={paymentMethod === "CR"? 0: recAmount}
         onChange={(e) => {
-          // setRecAmount(e.target.value);
+          setRecAmount(e.target.value);
         }}
+        disabled={paymentMethod === "CR"? true: false}
       />
     </Grid>
     <Grid item xs={2} marginLeft={1}>
@@ -204,9 +220,9 @@ export const ManageAddedItems = () => {
     </Grid>
     <Grid container marginTop={5}>
       <Button variant="contained" 
-      // onClick={() => {
-      //   SaveMoneyReceipt(false); handleClose();
-      // }} 
+      onClick={() => {
+        CreateCaseEntry(); handleClose();
+      }} 
       // disabled={recAmount === 0 ? true : false}
       > Save</Button>
       <Button
