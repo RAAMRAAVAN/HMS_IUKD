@@ -5,12 +5,23 @@ import { Button, Grid, MenuItem, Select, TextField, Typography } from "@mui/mate
 import { useEffect, useState } from "react";
 export const ManageAddedItems = () => {
   const Entries = useSelector(selectCaseEntryItems);
+  const [TotalRate, setTotalRate] = useState(0);
+  const [TotalGST, setTotalGST] = useState(0);
+  const [TotalAmount, setTotalAmount] = useState(0);
+  const [TotalDiscount, setTotalDiscount] = useState(0);
   const [enableBank, setEnableBank] = useState(false);
   const [paymentMethod, setpaymentMethod] = useState("C");
   const [bank, setBank] = useState("65");
   const [trnID, setTrnID] = useState("");
   const [remark, setRemark] = useState("");
   console.log("Manage Entries=", Entries);
+
+  const CalculateCharges = () => {
+    setTotalRate(Entries.reduce((acc, Entry)=>{return(acc+ Entry.Rate)}, 0));
+    setTotalGST(0);
+    setTotalAmount(Entries.reduce((acc, Entry)=>{return(acc+ Entry.Amount)}, 0));
+    setTotalDiscount(Entries.reduce((acc, Entry)=>{return(acc+ Entry.Discount)}, 0))
+  }
   useEffect(() => {
     const UpdateBankMenu = () => {
       switch (paymentMethod) {
@@ -23,6 +34,9 @@ export const ManageAddedItems = () => {
     };
     UpdateBankMenu();
   }, [paymentMethod]);
+  useEffect(()=>{
+    CalculateCharges();
+  },[Entries])
   return (<><Grid item display="flex" width="100%" marginY={1}>
     <Grid item xs={2}>
       <Typography fontSize={12} fontWeight="bold">
@@ -31,11 +45,11 @@ export const ManageAddedItems = () => {
       <TextField
         placeholder="Amount"
         size="small"
-        // value={amount}
+        value={TotalRate}
         onChange={(e) => {
           // setAmount(e.target.value);
         }}
-        disabled
+        // disabled
         fontSize={12}
       />
     </Grid>
@@ -47,11 +61,11 @@ export const ManageAddedItems = () => {
       <TextField
         placeholder="Amount"
         size="small"
-        // value={amount}
+        value={TotalGST}
         onChange={(e) => {
           // setAmount(e.target.value);
         }}
-        disabled
+        // disabled
         fontSize={12}
       />
     </Grid>
@@ -63,11 +77,11 @@ export const ManageAddedItems = () => {
       <TextField
         placeholder="Amount"
         size="small"
-        // value={amount}
+        value={TotalAmount}
         onChange={(e) => {
           // setAmount(e.target.value);
         }}
-        disabled
+        // disabled
         fontSize={12}
       />
     </Grid>
@@ -79,11 +93,11 @@ export const ManageAddedItems = () => {
       <TextField
         placeholder="Amount"
         size="small"
-        // value={amount}
+        value={TotalDiscount}
         onChange={(e) => {
           // setAmount(e.target.value);
         }}
-        disabled
+        // disabled
         fontSize={12}
       />
     </Grid>
@@ -95,11 +109,11 @@ export const ManageAddedItems = () => {
       <TextField
         placeholder="Amount"
         size="small"
-        // value={amount}
+        value={TotalAmount - TotalDiscount}
         onChange={(e) => {
           // setAmount(e.target.value);
         }}
-        disabled
+        // disabled
         fontSize={12}
       />
     </Grid>

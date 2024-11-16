@@ -1,5 +1,5 @@
 // import { selectCaseEntryItems } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
-import { deleteCaseEntry } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
+import { deleteCaseEntry, selectCaseEntryItems, updateCaseEntries } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
 import { Delete } from "@mui/icons-material";
 import { Autocomplete, Box, Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 import axios from "axios";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const AddedItems = (props) => {
     const dispatch = useDispatch();
+    const Entries = useSelector(selectCaseEntryItems);
     const {Entry, index, key} = props;
     console.log("Entry=", Entry);
     
@@ -30,8 +31,8 @@ export const AddedItems = (props) => {
 
     const handleUpdate = () => {
         // let TempEntry = Entries;
-        // TempEntry[index] = {SLNO: 1, ServiceName: Service.ServiceName, Rate: Rate, Discount: Discount, Tax: Tax, Amount: Amount};
-        // setEntries(TempEntry);
+        // TempEntry[index] = {SLNO: index+1, ServiceName: Service.ServiceName, Rate: Amount, Discount: Discount, Tax: Tax, Amount: Amount};
+        // dispatch(updateCaseEntries({Entry: {SLNO: index+1, ServiceName: Service, Rate: Amount, Discount: Discount, Tax: Tax, Amount: Amount},index: index}));
     }
 
     const handleDelete = () => {
@@ -48,7 +49,7 @@ export const AddedItems = (props) => {
 
     useEffect(()=>{
         handleUpdate()
-    }, [Rate, Discount, Amount])
+    }, [Amount])
 
     useEffect(()=>{
         setRate((Number(Amount)*100)/(Number(Tax) + 100))
@@ -72,7 +73,7 @@ export const AddedItems = (props) => {
             </Grid>
 
             <Grid item xs={3} border="1px black solid" >
-                <Autocomplete
+                {/* <Autocomplete
                     fullWidth
                     options={ServiceList}
                     // ref={autocompleteRef} // Attach ref to Autocomplete
@@ -109,7 +110,22 @@ export const AddedItems = (props) => {
                     )}
                     sx={{ display: "flex", width: "100%", fontSize: "14px" }}
                     size="small"
-                // disabled
+                disabled
+                /> */}
+                <TextField
+                    size="small"
+                    fontSize="11"
+                    sx={{
+                        width: "100%",
+                        '& .MuiInputBase-root': {
+                            fontSize: "14px",
+                            padding: "0px",  // Adjust padding for custom height
+                            borderRadius:"0"
+                        },
+                    }}
+                    // disabled
+                    value={Service.ServiceName}
+                    // onChange={(e)=>{setRate(e.target.value)}}
                 />
             </Grid>
 
@@ -125,9 +141,9 @@ export const AddedItems = (props) => {
                             borderRadius:"0"
                         },
                     }}
-                    disabled
+                    // disabled
                     value={Number(Rate).toFixed(0)}
-                    onChange={(e)=>{setRate(e.target.value)}}
+                    // onChange={(e)=>{setRate(e.target.value)}}
                 />
             </Grid>
 
@@ -146,8 +162,8 @@ export const AddedItems = (props) => {
                         },
                     }}
                     value={Tax}
-                    disabled
-                    onChange={(e)=>{setTax(e.target.value)}}
+                    // disabled
+                    // onChange={(e)=>{setTax(e.target.value)}}
                 />
             </Grid>
 
@@ -164,7 +180,8 @@ export const AddedItems = (props) => {
                         },
                     }}
                     value={Amount}
-                    onChange={(e)=>{setAmount(e.target.value)}}
+                    // onChange={(e)=>{setAmount(e.target.value)}}
+                    // disabled
                 />
             </Grid>
             <Grid item xs={1} border="1px black solid" >
@@ -180,7 +197,8 @@ export const AddedItems = (props) => {
                         },
                     }}
                     value={Discount}
-                    onChange={(e)=>{setDiscount(e.target.value)}}
+                    // disabled
+                    // onChange={(e)=>{setDiscount(e.target.value)}}
                 />
             </Grid>
 
@@ -196,9 +214,9 @@ export const AddedItems = (props) => {
                             borderRadius:"0"
                         },
                     }}
-                    disabled
+                    // disabled
                     value={Amount - Discount}
-                    onChange={(e)=>{setDiscount(e.target.value)}}
+                    // onChange={(e)=>{setDiscount(e.target.value)}}
                 />
             </Grid>
 

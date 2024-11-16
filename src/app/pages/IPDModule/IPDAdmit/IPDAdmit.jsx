@@ -299,6 +299,7 @@ export const IPDAdmit = () => {
       setRelation(setRelegionValue(selectedPatient.religionID))
       setOccupation({OID: selectedPatient.OccupationID, OccupationName: selectedPatient.OccupationName})
       setRelation(setRelationValue(selectedPatient.RelationID))
+      // setAlreadyAdmitted(false);
     }
   }, [selectedPatient]);
 

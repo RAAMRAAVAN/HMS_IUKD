@@ -127,6 +127,7 @@ export const AddItems = (props) => {
                         },
                     }}
                     value={Rate.toFixed(0)}
+                    disabled
                     // onChange={(e)=>{setRate(e.target.value)}}
                 />
             </Grid>
