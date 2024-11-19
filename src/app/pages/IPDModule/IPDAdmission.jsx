@@ -176,7 +176,7 @@ export const IPDAdmission = (props) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/admission_resources"
+        "http://192.168.1.32:5000/admission_resources"
       );
       console.log(response);
       setOccupationList(response.data.occupations);
@@ -197,7 +197,7 @@ export const IPDAdmission = (props) => {
   const getFilteredPatients = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/filtered_patient",
+        "http://192.168.1.32:5000/filtered_patient",
         {
           like_name: input,
         }
@@ -211,7 +211,7 @@ export const IPDAdmission = (props) => {
   const updateIPDAdmission = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/update-ipd-details", input
+        "http://192.168.1.32:5000/update-ipd-details", input
       );
       console.log("POST Result", response);
       if (response.data.UpdateStatus.rowsAffected[0] >= 1)
@@ -225,7 +225,7 @@ export const IPDAdmission = (props) => {
   const getIPDAdmissionDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDPatientDetails",
+        "http://192.168.1.32:5000/fetchIPDPatientDetails",
         {
           IPDNo: input,
         }

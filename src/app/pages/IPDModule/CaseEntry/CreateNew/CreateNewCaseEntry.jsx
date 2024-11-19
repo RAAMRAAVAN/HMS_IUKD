@@ -62,7 +62,7 @@ export const CreateNewCaseEntry = (props) => {
   const getMRDDetails = async (input) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/fetchIPDPatientDetails",
+        "http://192.168.1.32:5000/fetchIPDPatientDetails",
         { IPDNo: input }
       );
       console.log("money=", response.data[0]);
@@ -92,7 +92,7 @@ export const CreateNewCaseEntry = (props) => {
 
   const SaveMoneyReceipt = async (printStatus) => {
     try {
-      let response = await axios.post("http://localhost:5000/addMoneyReceipt", {
+      let response = await axios.post("http://192.168.1.32:5000/addMoneyReceipt", {
         ReceiptDate: date,
         ReceiptTime: time,
         AdmitDate: AdmDate,
@@ -325,7 +325,7 @@ export const CreateNewCaseEntry = (props) => {
               return (<AddedItems key={Entry.SLNO} Entry={Entry} index={index} />)
             })}
             <AddItems slno={Entries.length} />
-            <ManageAddedItems IPDID={IPDID} date={date} time={time} UserID={UserDetails.UId} UserName={UserDetails.FirstName}/>
+            <ManageAddedItems handleClose={handleClose}  IPDID={IPDID} date={date} time={time} UserID={UserDetails.UId} UserName={UserDetails.FirstName}/>
           </Grid>
         </Grid>
       </Box>

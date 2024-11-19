@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux"
-import { selectCaseEntryItems } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
+import { useDispatch, useSelector } from "react-redux"
+import { clearCaseEntries, selectCaseEntryItems } from "@/src/lib/features/IPDCaseEntry/IpdCaseEntrySlice";
 import { AddedItems } from "./AddedItems"
 import { Button, Grid, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 export const ManageAddedItems = (props) => {
-
-  const {IPDID, date, time, UserID, UserName} = props;
+  const dispatch = useDispatch();
+  const {IPDID, date, time, UserID, UserName, handleClose} = props;
   const Entries = useSelector(selectCaseEntryItems);
   const [TotalRate, setTotalRate] = useState(0);
   const [TotalGST, setTotalGST] = useState(0);
@@ -46,8 +46,13 @@ export const ManageAddedItems = (props) => {
 
   const CreateCaseEntry = async() => {
     try{
-      let result = await axios.post("http://localhost:5000/createCaseEntry", {IPDID: IPDID, Rate: TotalRate, Discount: TotalDiscount, Amount: TotalAmount, NetAmount: TotalAmount - TotalDiscount, RecAmount: (paymentMethod === "CR")? 0: recAmount, date: date, time: time, UserID: UserID, UserName: UserName, Entries: Entries});
-      console.log("result=", result);
+      let result = await axios.post("http://192.168.1.32:5000/createCaseEntry", {IPDID: IPDID, Rate: TotalRate, Discount: TotalDiscount, Amount: TotalAmount, NetAmount: TotalAmount - TotalDiscount, RecAmount: (paymentMethod === "CR")? 0: recAmount, date: date, time: time, UserID: UserID, UserName: UserName, Entries: Entries});
+      console.log("result=", result.data.result);
+      if(result.data.result >= 1 ){
+        dispatch(clearCaseEntries());
+        handleClose();
+        alert("Created");
+      }
     }catch(err){
       alert(err);
     }

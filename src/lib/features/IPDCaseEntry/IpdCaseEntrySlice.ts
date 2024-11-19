@@ -44,11 +44,14 @@ export const ipdCaseEntrySlice = createAppSlice({
         state.Entries =  TempEntry;
       },
     ),
+    clearCaseEntries: create.reducer((state) => {
+      state.Entries = [];
+    })
   })
 });
 
 // Action creators are generated for each case reducer function.
-export const { updateCaseEntries, setCaseEntry, deleteCaseEntry } =
+export const { updateCaseEntries, setCaseEntry, deleteCaseEntry, clearCaseEntries } =
 ipdCaseEntrySlice.actions;
 
 // Define selectors for accessing state
