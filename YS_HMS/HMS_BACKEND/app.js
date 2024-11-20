@@ -7,7 +7,7 @@ var config = {
   user: 'sa',
   password: 'sqlserver2012',
   database: 'KH_20232024',
-  server: 'DESKTOP-1D65M7P', // for local machine, use '192.168.1.32'
+  server: 'DESKTOP-MSLF5CM', // for local machine, use '192.168.1.32'
   driver: 'odbc',
   pool: {
     max: 50000,

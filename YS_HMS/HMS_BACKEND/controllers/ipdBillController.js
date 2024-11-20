@@ -125,6 +125,7 @@ exports.fetchDiagonasticCharges = async(req, res) => {
                    AND CE.PatientType = 'I' 
                    AND CE.MOD = 'CR' 
                    AND CE.ActiveStatus = 'Y' 
+                   AND CE.CaseCancel='N'
                    AND CED.TestCancel = 'N' 
                    AND CED.ActiveStatus = 'Y'
                    ORDER BY SM.SubDepartmentID, CaseDate, CE.CaseTime`;

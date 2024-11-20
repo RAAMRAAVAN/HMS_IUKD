@@ -118,7 +118,7 @@ ON DM.DrId = CE.DoctorID
 join
 M_UserMaster AS UM
 ON UM.UId = CE.UserID
-where CE.IPDID='${IPAID}' AND CE.ActiveStatus='Y' AND CE.DeleteStatus='N'`
+where CE.IPDID='${IPAID}' AND CE.ActiveStatus='Y' AND CE.DeleteStatus='N' AND CE.CaseCancel='N'`
   try{
     const IPDCaseEntry = await request.query(query);
     res.json({IPDCaseEntry: IPDCaseEntry.recordset})

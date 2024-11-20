@@ -90,7 +90,7 @@ VALUES(1, 1000001, 'I', ${PatientDetails.recordset[0].HRNo}, '${FetchLastCaseEnt
                                     IsUpload, IsUploadRTS, TestHeading, OrderBy, ReportingDate
                                 ) 
                                 VALUES (
-                                    1000001, 'Fixed', 
+                                    1000001, 'Profile', 
                                     ${FetchLastCaseEntry.recordset[0].CaseID + 1}, 
                                     ${Entry.Service.SID}, 
                                     '${Entry.Service.ServiceName}', 
