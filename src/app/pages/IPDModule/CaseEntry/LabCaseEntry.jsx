@@ -48,7 +48,7 @@ export const LabCaseEntry = (props) => {
   }, [])
   return (
     <>
-      <CreateNewCaseEntry open={open} setOpen={setOpen}/>
+      <CreateNewCaseEntry open={open} setOpen={setOpen} fetchIPDCaseEntry={fetchIPDCaseEntry}/>
       <Box display="flex" justifyContent="space-between" width="97vw" paddingY={1}>
         <Typography fontWeight="bold">Case Entry</Typography>
         <Button variant="contained" size="small" onClick={()=>{setOpen(!open)}}>Add</Button>

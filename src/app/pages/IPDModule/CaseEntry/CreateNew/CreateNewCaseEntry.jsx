@@ -26,7 +26,7 @@ import { AddedItems } from "./AddedItems";
 
 export const CreateNewCaseEntry = (props) => {
   const Entries = useSelector(selectCaseEntryItems)
-  const { setOpen, open } = props;
+  const { setOpen, open, fetchIPDCaseEntry } = props;
   const handlePrintClick = (ReceiptID) => {
     const url = `/pages/IPDModule/MoneyReceipt?ReceiptID=${ReceiptID}`;
     window.open(url, "_blank"); // Opens in a new tab
@@ -42,7 +42,7 @@ export const CreateNewCaseEntry = (props) => {
   const [recAmount, setRecAmount] = useState(0);
   const handleClose = () => setOpen(false);
   const [enableBank, setEnableBank] = useState(false);
-  const [paymentMethod, setpaymentMethod] = useState("C");
+  const [paymentMethod, setpaymentMethod] = useState("CR");
   const [bank, setBank] = useState("65");
   const [trnID, setTrnID] = useState("");
   const [remark, setRemark] = useState("");
@@ -126,6 +126,9 @@ export const CreateNewCaseEntry = (props) => {
         case "C":
           setEnableBank(false);
           break;
+        case "CR":
+          setEnableBank(false);
+          break;  
         default:
           setEnableBank(true);
       }
@@ -325,7 +328,7 @@ export const CreateNewCaseEntry = (props) => {
               return (<AddedItems key={Entry.SLNO} Entry={Entry} index={index} />)
             })}
             <AddItems slno={Entries.length} />
-            <ManageAddedItems handleClose={handleClose}  IPDID={IPDID} date={date} time={time} UserID={UserDetails.UId} UserName={UserDetails.FirstName}/>
+            <ManageAddedItems handleClose={handleClose} fetchIPDCaseEntry={fetchIPDCaseEntry} IPDID={IPDID} date={date} time={time} UserID={UserDetails.UId} UserName={UserDetails.FirstName}/>
           </Grid>
         </Grid>
       </Box>

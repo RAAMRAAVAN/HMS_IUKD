@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 export const ManageAddedItems = (props) => {
   const dispatch = useDispatch();
-  const {IPDID, date, time, UserID, UserName, handleClose} = props;
+  const {IPDID, date, time, UserID, UserName, handleClose, fetchIPDCaseEntry} = props;
   const Entries = useSelector(selectCaseEntryItems);
   const [TotalRate, setTotalRate] = useState(0);
   const [TotalGST, setTotalGST] = useState(0);
@@ -33,6 +33,9 @@ export const ManageAddedItems = (props) => {
         case "C":
           setEnableBank(false);
           break;
+        case "CR":
+          setEnableBank(false);
+          break;
         default:
           setEnableBank(true);
       }
@@ -46,11 +49,12 @@ export const ManageAddedItems = (props) => {
 
   const CreateCaseEntry = async() => {
     try{
-      let result = await axios.post("http://192.168.1.32:5000/createCaseEntry", {IPDID: IPDID, Rate: TotalRate, Discount: TotalDiscount, Amount: TotalAmount, NetAmount: TotalAmount - TotalDiscount, RecAmount: (paymentMethod === "CR")? 0: recAmount, date: date, time: time, UserID: UserID, UserName: UserName, Entries: Entries});
+      let result = await axios.post("http://192.168.1.32:5000/createCaseEntry", {IPDID: IPDID, Rate: TotalRate, Discount: TotalDiscount, Amount: TotalAmount, NetAmount: TotalAmount - TotalDiscount, RecAmount: (paymentMethod === "CR")? 0: recAmount, date: date, time: time, UserID: UserID, UserName: UserName, Entries: Entries, paymentMethod: paymentMethod, bank: bank, trnID: trnID, Remark: remark});
       console.log("result=", result.data.result);
       if(result.data.result >= 1 ){
         dispatch(clearCaseEntries());
         handleClose();
+        fetchIPDCaseEntry();
         alert("Created");
       }
     }catch(err){
