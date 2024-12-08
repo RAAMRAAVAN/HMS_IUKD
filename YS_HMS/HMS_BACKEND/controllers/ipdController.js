@@ -244,7 +244,7 @@ exports.fetchIPDPatient = async (req, res) => {
   const {IPDNo} = req.body;
   const request = new sql.Request();
   const query = `select * from M_IPDAdmission where IPDNo='${IPDNo}'`
-  const query2 = `select BM.BedNo, UM.FirstName,WM.WardName,OM.OID AS OccupationOID, DoM.DoctorName,
+  const query2 = `select BM.BedNo, UM.FirstName,WM.WardName,OM.OID AS OccupationOID, DoM.DoctorName, SMS.Specialized,
             OM.OccupationName, DM.CountryID,DID,DM.DistrictName,SM.StateId, SM.StateName,PM.* from M_IPDAdmission as PM join
 		M_DistrictMaster AS DM
 		ON PM.DistictID = DM.DID
@@ -257,6 +257,9 @@ exports.fetchIPDPatient = async (req, res) => {
     join
     M_DoctorMaster AS DoM
     ON DoM.DrId=PM.UnderDr
+	join
+	M_SpecializedMaster AS SMS
+	ON SMS.SID=DoM.SpecializedID
     join
 		M_WardMaster as WM
 		ON PM.WardID = WM.WardID
@@ -362,7 +365,7 @@ exports.filterIPDPatientAuto = async (req, res) => {
   // console.log(req.body.like_name)
   const request = new sql.Request();
   const query1 = `select IPAID, HRNo, PatientName, Date from M_IPDAdmission where (PatientName LIKE '%${like_name}%' OR
-            HRNo LIKE '%${like_name}%') AND RegStatus='B' AND Discharge='N' ORDER BY Date DESC`
+            HRNo LIKE '%${like_name}%') ORDER BY Date DESC`
   try{
     const filtered_patient_list = await request.query(query1);
     // console.log(filtered_patient_list)

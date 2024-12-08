@@ -154,7 +154,7 @@ export const AdmissionForm = () => {
               </Grid>
               <Grid xs={12} item display="flex" justifyContent="center">
                 <Typography fontSize={12} textAlign="center">
-                  Dr. Arup Kumar Nath & Urology Team
+                  {MRDDetails.DoctorName}
                 </Typography>
               </Grid>
             </Grid>
@@ -303,7 +303,7 @@ export const AdmissionForm = () => {
               </Grid>
               <Grid xs={12} item display="flex" justifyContent="center">
                 <Typography fontSize={12} textAlign="center">
-                  UROLOGIST
+                  {MRDDetails.Specialized}
                 </Typography>
               </Grid>
             </Grid>

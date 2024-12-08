@@ -110,7 +110,7 @@ export const MRDForm = () => {
                 </Typography>
               </Grid>
               <Grid xs={9} item>
-                <Typography fontSize={12}>: DR. ARUP KUMAR NATH & UROLOGY TEAM</Typography>
+                <Typography fontSize={12}>: {MRDDetails.DoctorName}</Typography>
               </Grid>
             </Grid>
 
